@@ -1,0 +1,58 @@
+project:
+  name: english-two-speaker-podcast
+  seed: 124578
+
+paths:
+  assets_dir: assets
+  models_dir: models
+  work_dir: out
+
+audio:
+  target_sample_rate: 16000
+  target_channels: 1
+  loudnorm: "I=-16:TP=-1.5:LRA=11"
+  denoise: false
+  denoise_nf: -25
+  min_duration_sec: 60
+  max_duration_sec: 300
+
+speakers:
+  a:
+    source_image: "assets/speaker_a.jpg"
+    idle_video: "assets/speaker_a_looped.mp4"
+    input_video: "/Users/pranamyajain/Downloads/male podcast studio.mp4"
+  b:
+    source_image: "assets/speaker_b.jpg"
+    idle_video: "assets/speaker_b_looped.mp4"
+    input_video: "/Users/pranamyajain/Downloads/female podcast studio.mp4"
+
+transcription:
+  model_name: "large-v3"
+  language: "en"
+  word_timestamps: true
+
+diarize:
+  speaker_change_gap_sec: 0.8
+
+lipsync:
+  backend: "sadtalker"
+  repo_path: "models/SadTalker"
+
+subtitles:
+  model_name: "large-v3"
+  device: "cpu"
+  compute_type: "int8"
+  language: "en"
+  beam_size: 5
+  vad_filter: true
+  output_srt: "transcript_en.srt"
+
+export:
+  width: 1280
+  height: 720
+  fps: 25
+  crf: 18
+  audio_bitrate: "192k"
+  audio_sample_rate: 48000
+  preset: "medium"
+  pix_fmt: "yuv420p"

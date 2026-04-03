@@ -1,0 +1,13 @@
+name: hindi-podcast-local
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - ffmpeg=6.1
+  - pytorch=2.4.*
+  - pytorch-cuda=12.1
+  - pip
+  - pip:
+      - -r requirements.txt
