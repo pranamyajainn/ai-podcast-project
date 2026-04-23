@@ -1,1703 +1,2799 @@
-1. **Phase 0: Complete File Inventory**
+# CTO Technical Audit Report
 
-Assumptions:
-- I audited `/Users/pranamyajain/hindi_podcast_local` as the repository root.
-- I treated everything under that root as in-scope, including vendored `models/Wav2Lip/.git` metadata and generated `out/` artifacts, because you asked for every file that exists.
-- For binary/media/model files, I audited metadata and stream structure with `file`, `stat`, and `ffprobe`; I did not reverse-engineer binary contents.
+Generated: `2026-04-13 16:24:14` (local)
+Repo root: `/Users/pranamyajain/hindi_podcast_local`
 
-Counts:
-- Total files: `174`
-- Total directories: `82`
-- Total filesystem entries under repo root: `256`
+This report is generated from the current working tree and supersedes any older audit content.
 
-Recursive inventory:
+### Scope and Assumptions
+- Includes all files under the repo root excluding Git internals (`.git/`) and Python bytecode caches (`__pycache__/`).
+- Includes `out/` artifacts and `assets/` media because they exist in this working tree and appear to be versioned here.
+- For binary media (MP4/JPG) this report records `ffprobe`/`sips` metadata; it does not reverse-engineer binary contents.
+
+## Phase 0: Complete File Inventory
+
+- Total directories (excluding `.git/`, `__pycache__/`): `140`
+- Total files (excluding `.git/`, `__pycache__/`): `606`
+
+Top-level file distribution (files):
+- `models`: `564`
+- `out`: `15`
+- `podcast_pipeline`: `9`
+- `assets`: `5`
+- `scripts`: `5`
+- `.gitignore`: `1`
+- `.gitmodules`: `1`
+- `README.md`: `1`
+- `TECHNICAL_AUDIT.md`: `1`
+- `configs`: `1`
+- `environment.yml`: `1`
+- `requirements.txt`: `1`
+- `run_podcast.py`: `1`
+
+Recursive inventory (directories then files):
 ```text
 .
-./.gitignore
-./README.md
 ./assets
-./assets/README.md
 ./configs
-./configs/default_config.yaml
 ./docs
-./docs/sample_timing_rtx3060.md
-./environment.yml
 ./models
-./models/README.md
-./models/Wav2Lip
-./models/Wav2Lip/.git
-./models/Wav2Lip/.git/HEAD
-./models/Wav2Lip/.git/config
-./models/Wav2Lip/.git/description
-./models/Wav2Lip/.git/hooks
-./models/Wav2Lip/.git/hooks/applypatch-msg.sample
-./models/Wav2Lip/.git/hooks/commit-msg.sample
-./models/Wav2Lip/.git/hooks/fsmonitor-watchman.sample
-./models/Wav2Lip/.git/hooks/post-update.sample
-./models/Wav2Lip/.git/hooks/pre-applypatch.sample
-./models/Wav2Lip/.git/hooks/pre-commit.sample
-./models/Wav2Lip/.git/hooks/pre-merge-commit.sample
-./models/Wav2Lip/.git/hooks/pre-push.sample
-./models/Wav2Lip/.git/hooks/pre-rebase.sample
-./models/Wav2Lip/.git/hooks/pre-receive.sample
-./models/Wav2Lip/.git/hooks/prepare-commit-msg.sample
-./models/Wav2Lip/.git/hooks/push-to-checkout.sample
-./models/Wav2Lip/.git/hooks/sendemail-validate.sample
-./models/Wav2Lip/.git/hooks/update.sample
-./models/Wav2Lip/.git/index
-./models/Wav2Lip/.git/info
-./models/Wav2Lip/.git/info/exclude
-./models/Wav2Lip/.git/logs
-./models/Wav2Lip/.git/logs/HEAD
-./models/Wav2Lip/.git/logs/refs
-./models/Wav2Lip/.git/logs/refs/heads
-./models/Wav2Lip/.git/logs/refs/heads/master
-./models/Wav2Lip/.git/logs/refs/remotes
-./models/Wav2Lip/.git/logs/refs/remotes/origin
-./models/Wav2Lip/.git/logs/refs/remotes/origin/HEAD
-./models/Wav2Lip/.git/objects
-./models/Wav2Lip/.git/objects/info
-./models/Wav2Lip/.git/objects/pack
-./models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.idx
-./models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.pack
-./models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.rev
-./models/Wav2Lip/.git/packed-refs
-./models/Wav2Lip/.git/refs
-./models/Wav2Lip/.git/refs/heads
-./models/Wav2Lip/.git/refs/heads/master
-./models/Wav2Lip/.git/refs/remotes
-./models/Wav2Lip/.git/refs/remotes/origin
-./models/Wav2Lip/.git/refs/remotes/origin/HEAD
-./models/Wav2Lip/.git/refs/tags
-./models/Wav2Lip/.gitignore
-./models/Wav2Lip/README.md
-./models/Wav2Lip/__pycache__
-./models/Wav2Lip/__pycache__/audio.cpython-310.pyc
-./models/Wav2Lip/__pycache__/hparams.cpython-310.pyc
-./models/Wav2Lip/audio.py
-./models/Wav2Lip/checkpoints
-./models/Wav2Lip/checkpoints/README.md
-./models/Wav2Lip/checkpoints/wav2lip_gan.pth
-./models/Wav2Lip/checkpoints_from_folder
-./models/Wav2Lip/checkpoints_from_folder/.DS_Store
-./models/Wav2Lip/checkpoints_from_folder/.ipynb_checkpoints
-./models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-GAN.pt
-./models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-NOGAN.pt
-./models/Wav2Lip/checkpoints_from_folder/listing.txt
-./models/Wav2Lip/color_syncnet_train.py
-./models/Wav2Lip/evaluation
-./models/Wav2Lip/evaluation/README.md
-./models/Wav2Lip/evaluation/gen_videos_from_filelist.py
-./models/Wav2Lip/evaluation/real_videos_inference.py
-./models/Wav2Lip/evaluation/scores_LSE
-./models/Wav2Lip/evaluation/scores_LSE/SyncNetInstance_calc_scores.py
-./models/Wav2Lip/evaluation/scores_LSE/calculate_scores_LRS.py
-./models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.py
-./models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.sh
-./models/Wav2Lip/evaluation/test_filelists
-./models/Wav2Lip/evaluation/test_filelists/README.md
-./models/Wav2Lip/evaluation/test_filelists/ReSyncED
-./models/Wav2Lip/evaluation/test_filelists/ReSyncED/random_pairs.txt
-./models/Wav2Lip/evaluation/test_filelists/ReSyncED/tts_pairs.txt
-./models/Wav2Lip/evaluation/test_filelists/lrs2.txt
-./models/Wav2Lip/evaluation/test_filelists/lrs3.txt
-./models/Wav2Lip/evaluation/test_filelists/lrw.txt
-./models/Wav2Lip/face_detection
-./models/Wav2Lip/face_detection/README.md
-./models/Wav2Lip/face_detection/__init__.py
-./models/Wav2Lip/face_detection/__pycache__
-./models/Wav2Lip/face_detection/__pycache__/__init__.cpython-310.pyc
-./models/Wav2Lip/face_detection/__pycache__/api.cpython-310.pyc
-./models/Wav2Lip/face_detection/__pycache__/models.cpython-310.pyc
-./models/Wav2Lip/face_detection/__pycache__/utils.cpython-310.pyc
-./models/Wav2Lip/face_detection/api.py
-./models/Wav2Lip/face_detection/detection
-./models/Wav2Lip/face_detection/detection/__init__.py
-./models/Wav2Lip/face_detection/detection/__pycache__
-./models/Wav2Lip/face_detection/detection/__pycache__/__init__.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/__pycache__/core.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/core.py
-./models/Wav2Lip/face_detection/detection/sfd
-./models/Wav2Lip/face_detection/detection/sfd/__init__.py
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__/__init__.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__/bbox.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__/detect.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__/net_s3fd.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/sfd/__pycache__/sfd_detector.cpython-310.pyc
-./models/Wav2Lip/face_detection/detection/sfd/bbox.py
-./models/Wav2Lip/face_detection/detection/sfd/detect.py
-./models/Wav2Lip/face_detection/detection/sfd/net_s3fd.py
-./models/Wav2Lip/face_detection/detection/sfd/s3fd.pth
-./models/Wav2Lip/face_detection/detection/sfd/sfd_detector.py
-./models/Wav2Lip/face_detection/models.py
-./models/Wav2Lip/face_detection/utils.py
-./models/Wav2Lip/filelists
-./models/Wav2Lip/filelists/README.md
-./models/Wav2Lip/hparams.py
-./models/Wav2Lip/hq_wav2lip_train.py
-./models/Wav2Lip/inference.py
-./models/Wav2Lip/models
-./models/Wav2Lip/models/__init__.py
-./models/Wav2Lip/models/__pycache__
-./models/Wav2Lip/models/__pycache__/__init__.cpython-310.pyc
-./models/Wav2Lip/models/__pycache__/conv.cpython-310.pyc
-./models/Wav2Lip/models/__pycache__/syncnet.cpython-310.pyc
-./models/Wav2Lip/models/__pycache__/wav2lip.cpython-310.pyc
-./models/Wav2Lip/models/conv.py
-./models/Wav2Lip/models/syncnet.py
-./models/Wav2Lip/models/wav2lip.py
-./models/Wav2Lip/preprocess.py
-./models/Wav2Lip/requirements.txt
-./models/Wav2Lip/results
-./models/Wav2Lip/results/README.md
-./models/Wav2Lip/temp
-./models/Wav2Lip/temp/README.md
-./models/Wav2Lip/temp/result.avi
-./models/Wav2Lip/wav2lip_train.py
+./models/LatentSync
+./models/LatentSync/assets
+./models/LatentSync/configs
+./models/LatentSync/configs/syncnet
+./models/LatentSync/configs/unet
+./models/LatentSync/docs
+./models/LatentSync/eval
+./models/LatentSync/eval/detectors
+./models/LatentSync/eval/detectors/s3fd
+./models/LatentSync/eval/syncnet
+./models/LatentSync/latentsync
+./models/LatentSync/latentsync/data
+./models/LatentSync/latentsync/models
+./models/LatentSync/latentsync/pipelines
+./models/LatentSync/latentsync/trepa
+./models/LatentSync/latentsync/trepa/third_party
+./models/LatentSync/latentsync/trepa/third_party/VideoMAEv2
+./models/LatentSync/latentsync/trepa/utils
+./models/LatentSync/latentsync/utils
+./models/LatentSync/latentsync/whisper
+./models/LatentSync/latentsync/whisper/whisper
+./models/LatentSync/latentsync/whisper/whisper/assets
+./models/LatentSync/latentsync/whisper/whisper/assets/gpt2
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual
+./models/LatentSync/latentsync/whisper/whisper/normalizers
+./models/LatentSync/preprocess
+./models/LatentSync/scripts
+./models/LatentSync/tools
+./models/SadTalker
+./models/SadTalker/checkpoints
+./models/SadTalker/docs
+./models/SadTalker/examples
+./models/SadTalker/examples/driven_audio
+./models/SadTalker/examples/ref_video
+./models/SadTalker/examples/source_image
+./models/SadTalker/gfpgan
+./models/SadTalker/gfpgan/weights
+./models/SadTalker/scripts
+./models/SadTalker/src
+./models/SadTalker/src/audio2exp_models
+./models/SadTalker/src/audio2pose_models
+./models/SadTalker/src/config
+./models/SadTalker/src/face3d
+./models/SadTalker/src/face3d/data
+./models/SadTalker/src/face3d/models
+./models/SadTalker/src/face3d/models/arcface_torch
+./models/SadTalker/src/face3d/models/arcface_torch/backbones
+./models/SadTalker/src/face3d/models/arcface_torch/configs
+./models/SadTalker/src/face3d/models/arcface_torch/docs
+./models/SadTalker/src/face3d/models/arcface_torch/eval
+./models/SadTalker/src/face3d/models/arcface_torch/utils
+./models/SadTalker/src/face3d/options
+./models/SadTalker/src/face3d/util
+./models/SadTalker/src/facerender
+./models/SadTalker/src/facerender/modules
+./models/SadTalker/src/facerender/sync_batchnorm
+./models/SadTalker/src/utils
 ./models/licenses
-./models/licenses/README.md
+./models/video-retalking
+./models/video-retalking/docs
+./models/video-retalking/docs/static
+./models/video-retalking/docs/static/css
+./models/video-retalking/docs/static/images
+./models/video-retalking/docs/static/js
+./models/video-retalking/docs/static/pdfs
+./models/video-retalking/docs/static/videos
+./models/video-retalking/examples
+./models/video-retalking/examples/audio
+./models/video-retalking/examples/face
+./models/video-retalking/models
+./models/video-retalking/third_part
+./models/video-retalking/third_part/GFPGAN
+./models/video-retalking/third_part/GFPGAN/gfpgan
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs
+./models/video-retalking/third_part/GFPGAN/gfpgan/data
+./models/video-retalking/third_part/GFPGAN/gfpgan/models
+./models/video-retalking/third_part/GFPGAN/gfpgan/weights
+./models/video-retalking/third_part/GFPGAN/options
+./models/video-retalking/third_part/GPEN
+./models/video-retalking/third_part/GPEN/face_detect
+./models/video-retalking/third_part/GPEN/face_detect/data
+./models/video-retalking/third_part/GPEN/face_detect/data/FDDB
+./models/video-retalking/third_part/GPEN/face_detect/facemodels
+./models/video-retalking/third_part/GPEN/face_detect/layers
+./models/video-retalking/third_part/GPEN/face_detect/layers/functions
+./models/video-retalking/third_part/GPEN/face_detect/layers/modules
+./models/video-retalking/third_part/GPEN/face_detect/utils
+./models/video-retalking/third_part/GPEN/face_detect/utils/nms
+./models/video-retalking/third_part/GPEN/face_model
+./models/video-retalking/third_part/GPEN/face_model/op
+./models/video-retalking/third_part/GPEN/face_morpher
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher
+./models/video-retalking/third_part/GPEN/face_morpher/scripts
+./models/video-retalking/third_part/GPEN/face_parse
+./models/video-retalking/third_part/face3d
+./models/video-retalking/third_part/face3d/checkpoints
+./models/video-retalking/third_part/face3d/checkpoints/model_name
+./models/video-retalking/third_part/face3d/data
+./models/video-retalking/third_part/face3d/models
+./models/video-retalking/third_part/face3d/models/arcface_torch
+./models/video-retalking/third_part/face3d/models/arcface_torch/backbones
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs
+./models/video-retalking/third_part/face3d/models/arcface_torch/docs
+./models/video-retalking/third_part/face3d/models/arcface_torch/eval
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils
+./models/video-retalking/third_part/face3d/options
+./models/video-retalking/third_part/face3d/util
+./models/video-retalking/third_part/face_detection
+./models/video-retalking/third_part/face_detection/detection
+./models/video-retalking/third_part/face_detection/detection/sfd
+./models/video-retalking/third_part/ganimation_replicate
+./models/video-retalking/third_part/ganimation_replicate/checkpoints
+./models/video-retalking/third_part/ganimation_replicate/ckpts
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183211
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183229
+./models/video-retalking/third_part/ganimation_replicate/data
+./models/video-retalking/third_part/ganimation_replicate/model
+./models/video-retalking/utils
 ./out
-./out/.DS_Store
-./out/episode_old_rj_1_fallback
-./out/episode_old_rj_1_fallback/.DS_Store
-./out/episode_old_rj_1_fallback/assets
-./out/episode_old_rj_1_fallback/assets/avatar_rgba.png
-./out/episode_old_rj_1_fallback/assets/background_1920x1080.png
-./out/episode_old_rj_1_fallback/index.html
-./out/episode_old_rj_1_fallback/logs
-./out/episode_old_rj_1_fallback/logs/http_server.log
-./out/episode_old_rj_1_fallback/logs/http_server.pid
-./out/episode_old_rj_1_fallback/stage1_audio
-./out/episode_old_rj_1_fallback/stage1_audio/preprocessed.wav
-./out/episode_old_rj_1_fallback/stage5_subtitles
-./out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi.srt
-./out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi_medium.srt
-./out/episode_old_rj_1_fallback/stage6_export
-./out/episode_old_rj_1_fallback/stage6_export/final_1080p.mp4
-./out/episode_old_rj_1_realhost_web
-./out/episode_old_rj_1_realhost_web/final_1080p.mp4
-./out/episode_old_rj_1_realhost_web/http_server.log
-./out/episode_old_rj_1_realhost_web/http_server.pid
-./out/episode_old_rj_1_realhost_web/index.html
-./out/episode_old_rj_1_realhost_web/preview_frame.png
-./out/episode_old_rj_1_realhost_web/preview_syncfix_final.png
-./out/episode_old_rj_1_realhost_web/preview_userface.png
-./out/episode_old_rj_1_reallipsync
-./out/episode_old_rj_1_reallipsync/assets
-./out/episode_old_rj_1_reallipsync/assets/background_real_1920x1080.png
-./out/episode_old_rj_1_reallipsync/assets/source_face.jpg
-./out/episode_old_rj_1_reallipsync/logs
-./out/episode_old_rj_1_reallipsync/logs/wav2lip_infer.log
-./out/episode_old_rj_1_reallipsync/stage1_audio
-./out/episode_old_rj_1_reallipsync/stage1_audio/preprocessed.wav
-./out/episode_old_rj_1_reallipsync/stage3_lipsync
-./out/episode_old_rj_1_reallipsync/stage3_lipsync/frame_100.png
-./out/episode_old_rj_1_reallipsync/stage3_lipsync/wav2lip_raw.mp4
-./out/episode_old_rj_1_reallipsync/stage4_composite
-./out/episode_old_rj_1_reallipsync/stage6_export
-./out/episode_old_rj_1_reallipsync/stage6_export/final_realhost_1080p.mp4
-./out/episode_old_rj_1_refstyle_v3
-./out/episode_old_rj_1_refstyle_v3/assets
-./out/episode_old_rj_1_refstyle_v3/assets/reference_motion.mp4
-./out/episode_old_rj_1_refstyle_v3/calib
-./out/episode_old_rj_1_refstyle_v3/calib/audio_12s.wav
-./out/episode_old_rj_1_refstyle_v3/calib/calib_auto.log
-./out/episode_old_rj_1_refstyle_v3/calib/driver_12s.mp4
-./out/episode_old_rj_1_refstyle_v3/calib/out_auto.mp4
-./out/episode_old_rj_1_refstyle_v3/logs
-./out/episode_old_rj_1_refstyle_v3/logs/wav2lip_infer.log
-./out/episode_old_rj_1_refstyle_v3/stage1_audio
-./out/episode_old_rj_1_refstyle_v3/stage1_audio/preprocessed.wav
-./out/episode_old_rj_1_refstyle_v3/stage2_driver
-./out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_driver_92s.mp4
-./out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_fwd.mp4
-./out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_pingpong.mp4
-./out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_rev.mp4
-./out/episode_old_rj_1_refstyle_v3/stage3_lipsync
-./out/episode_old_rj_1_refstyle_v3/stage3_lipsync/contact_refstyle.png
-./out/episode_old_rj_1_refstyle_v3/stage3_lipsync/frame360.png
-./out/episode_old_rj_1_refstyle_v3/stage3_lipsync/wav2lip_refstyle.mp4
-./out/episode_old_rj_1_refstyle_v3/stage6_export
-./out/episode_old_rj_1_syncfix_v2
-./out/episode_old_rj_1_syncfix_v2/assets
-./out/episode_old_rj_1_syncfix_v2/assets/source_face.png
-./out/episode_old_rj_1_syncfix_v2/assets/source_face_1280x720.png
-./out/episode_old_rj_1_syncfix_v2/logs
-./out/episode_old_rj_1_syncfix_v2/logs/wav2lip_infer.log
-./out/episode_old_rj_1_syncfix_v2/stage1_audio
-./out/episode_old_rj_1_syncfix_v2/stage1_audio/preprocessed.wav
-./out/episode_old_rj_1_syncfix_v2/stage3_lipsync
-./out/episode_old_rj_1_syncfix_v2/stage3_lipsync/preview_syncfix.png
-./out/episode_old_rj_1_syncfix_v2/stage3_lipsync/wav2lip_syncfix.mp4
-./out/episode_old_rj_1_syncfix_v2/stage6_export
-./out/episode_old_rj_1_syncfix_v2/stage6_export/final_1080p_syncfix.mp4
-./out/episode_old_rj_1_userface_multiframe
-./out/episode_old_rj_1_userface_multiframe/.DS_Store
-./out/episode_old_rj_1_userface_multiframe/assets
-./out/episode_old_rj_1_userface_multiframe/assets/host_image.png
-./out/episode_old_rj_1_userface_multiframe/logs
-./out/episode_old_rj_1_userface_multiframe/logs/wav2lip_infer.log
-./out/episode_old_rj_1_userface_multiframe/stage1_audio
-./out/episode_old_rj_1_userface_multiframe/stage1_audio/preprocessed.wav
-./out/episode_old_rj_1_userface_multiframe/stage2_driver
-./out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_face_92s.mp4
-./out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_forward.mp4
-./out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_pingpong.mp4
-./out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_reverse.mp4
-./out/episode_old_rj_1_userface_multiframe/stage3_lipsync
-./out/episode_old_rj_1_userface_multiframe/stage3_lipsync/wav2lip_userface.mp4
-./out/episode_old_rj_1_userface_multiframe/stage6_export
-./out/episode_old_rj_1_userface_multiframe/stage6_export/final_1080p_userface.mp4
-./out/reference_inspect
-./out/reference_inspect/reference_contact.png
+./out/episode_001_preview
+./out/episode_001_preview/logs
+./out/episode_001_preview/stage1_audio
+./out/episode_001_preview/stage2_diarize
+./out/episode_001_preview/stage3_lipsync_a
+./out/episode_001_preview/stage3_lipsync_b
+./out/episode_001_preview/stage4_composite
+./out/episode_001_preview/stage5_subtitles
+./out/episode_001_preview/stage6_export
+./out/episode_002_preview
+./out/episode_002_preview/stage1_audio
+./out/episode_002_preview/stage5_subtitles
+./out/episode_002_preview/stage6_export
 ./podcast_pipeline
+./scripts
+./.gitignore
+./.gitmodules
+./README.md
+./TECHNICAL_AUDIT.md
+./assets/README.md
+./assets/speaker_a.jpg
+./assets/speaker_a_looped.mp4
+./assets/speaker_b.jpg
+./assets/speaker_b_looped.mp4
+./configs/default_config.yaml
+./environment.yml
+./models/LatentSync/.git
+./models/LatentSync/.gitignore
+./models/LatentSync/LICENSE
+./models/LatentSync/README.md
+./models/LatentSync/assets/demo1_audio.wav
+./models/LatentSync/assets/demo1_video.mp4
+./models/LatentSync/assets/demo2_audio.wav
+./models/LatentSync/assets/demo2_video.mp4
+./models/LatentSync/assets/demo3_audio.wav
+./models/LatentSync/assets/demo3_video.mp4
+./models/LatentSync/cog.yaml
+./models/LatentSync/configs/audio.yaml
+./models/LatentSync/configs/scheduler_config.json
+./models/LatentSync/configs/syncnet/syncnet_16_latent.yaml
+./models/LatentSync/configs/syncnet/syncnet_16_pixel.yaml
+./models/LatentSync/configs/syncnet/syncnet_16_pixel_attn.yaml
+./models/LatentSync/configs/syncnet/syncnet_25_pixel.yaml
+./models/LatentSync/configs/unet/stage1.yaml
+./models/LatentSync/configs/unet/stage1_512.yaml
+./models/LatentSync/configs/unet/stage2.yaml
+./models/LatentSync/configs/unet/stage2_512.yaml
+./models/LatentSync/configs/unet/stage2_efficient.yaml
+./models/LatentSync/data_processing_pipeline.sh
+./models/LatentSync/docs/changelog_v1.5.md
+./models/LatentSync/docs/changelog_v1.6.md
+./models/LatentSync/docs/framework.png
+./models/LatentSync/docs/syncnet_arch.md
+./models/LatentSync/eval/detectors/README.md
+./models/LatentSync/eval/detectors/__init__.py
+./models/LatentSync/eval/detectors/s3fd/__init__.py
+./models/LatentSync/eval/detectors/s3fd/box_utils.py
+./models/LatentSync/eval/detectors/s3fd/nets.py
+./models/LatentSync/eval/draw_syncnet_lines.py
+./models/LatentSync/eval/eval_fvd.py
+./models/LatentSync/eval/eval_sync_conf.py
+./models/LatentSync/eval/eval_sync_conf.sh
+./models/LatentSync/eval/eval_syncnet_acc.py
+./models/LatentSync/eval/eval_syncnet_acc.sh
+./models/LatentSync/eval/fvd.py
+./models/LatentSync/eval/hyper_iqa.py
+./models/LatentSync/eval/inference_videos.py
+./models/LatentSync/eval/syncnet/__init__.py
+./models/LatentSync/eval/syncnet/syncnet.py
+./models/LatentSync/eval/syncnet/syncnet_eval.py
+./models/LatentSync/eval/syncnet_detect.py
+./models/LatentSync/gradio_app.py
+./models/LatentSync/inference.sh
+./models/LatentSync/latentsync/data/syncnet_dataset.py
+./models/LatentSync/latentsync/data/unet_dataset.py
+./models/LatentSync/latentsync/models/attention.py
+./models/LatentSync/latentsync/models/motion_module.py
+./models/LatentSync/latentsync/models/resnet.py
+./models/LatentSync/latentsync/models/stable_syncnet.py
+./models/LatentSync/latentsync/models/unet.py
+./models/LatentSync/latentsync/models/unet_blocks.py
+./models/LatentSync/latentsync/models/utils.py
+./models/LatentSync/latentsync/models/wav2lip_syncnet.py
+./models/LatentSync/latentsync/pipelines/lipsync_pipeline.py
+./models/LatentSync/latentsync/trepa/loss.py
+./models/LatentSync/latentsync/trepa/third_party/VideoMAEv2/__init__.py
+./models/LatentSync/latentsync/trepa/third_party/VideoMAEv2/utils.py
+./models/LatentSync/latentsync/trepa/third_party/VideoMAEv2/videomaev2_finetune.py
+./models/LatentSync/latentsync/trepa/third_party/VideoMAEv2/videomaev2_pretrain.py
+./models/LatentSync/latentsync/trepa/third_party/__init__.py
+./models/LatentSync/latentsync/trepa/utils/__init__.py
+./models/LatentSync/latentsync/trepa/utils/data_utils.py
+./models/LatentSync/latentsync/trepa/utils/metric_utils.py
+./models/LatentSync/latentsync/utils/affine_transform.py
+./models/LatentSync/latentsync/utils/audio.py
+./models/LatentSync/latentsync/utils/av_reader.py
+./models/LatentSync/latentsync/utils/face_detector.py
+./models/LatentSync/latentsync/utils/image_processor.py
+./models/LatentSync/latentsync/utils/mask.png
+./models/LatentSync/latentsync/utils/mask2.png
+./models/LatentSync/latentsync/utils/mask3.png
+./models/LatentSync/latentsync/utils/mask4.png
+./models/LatentSync/latentsync/utils/util.py
+./models/LatentSync/latentsync/whisper/audio2feature.py
+./models/LatentSync/latentsync/whisper/whisper/__init__.py
+./models/LatentSync/latentsync/whisper/whisper/__main__.py
+./models/LatentSync/latentsync/whisper/whisper/assets/gpt2/merges.txt
+./models/LatentSync/latentsync/whisper/whisper/assets/gpt2/special_tokens_map.json
+./models/LatentSync/latentsync/whisper/whisper/assets/gpt2/tokenizer_config.json
+./models/LatentSync/latentsync/whisper/whisper/assets/gpt2/vocab.json
+./models/LatentSync/latentsync/whisper/whisper/assets/mel_filters.npz
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual/added_tokens.json
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual/merges.txt
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual/special_tokens_map.json
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual/tokenizer_config.json
+./models/LatentSync/latentsync/whisper/whisper/assets/multilingual/vocab.json
+./models/LatentSync/latentsync/whisper/whisper/audio.py
+./models/LatentSync/latentsync/whisper/whisper/decoding.py
+./models/LatentSync/latentsync/whisper/whisper/model.py
+./models/LatentSync/latentsync/whisper/whisper/normalizers/__init__.py
+./models/LatentSync/latentsync/whisper/whisper/normalizers/basic.py
+./models/LatentSync/latentsync/whisper/whisper/normalizers/english.json
+./models/LatentSync/latentsync/whisper/whisper/normalizers/english.py
+./models/LatentSync/latentsync/whisper/whisper/tokenizer.py
+./models/LatentSync/latentsync/whisper/whisper/transcribe.py
+./models/LatentSync/latentsync/whisper/whisper/utils.py
+./models/LatentSync/predict.py
+./models/LatentSync/preprocess/affine_transform.py
+./models/LatentSync/preprocess/data_processing_pipeline.py
+./models/LatentSync/preprocess/detect_shot.py
+./models/LatentSync/preprocess/filter_high_resolution.py
+./models/LatentSync/preprocess/filter_visual_quality.py
+./models/LatentSync/preprocess/remove_broken_videos.py
+./models/LatentSync/preprocess/remove_incorrect_affined.py
+./models/LatentSync/preprocess/resample_fps_hz.py
+./models/LatentSync/preprocess/segment_videos.py
+./models/LatentSync/preprocess/sync_av.py
+./models/LatentSync/requirements.txt
+./models/LatentSync/scripts/inference.py
+./models/LatentSync/scripts/train_syncnet.py
+./models/LatentSync/scripts/train_unet.py
+./models/LatentSync/setup_env.sh
+./models/LatentSync/tools/count_total_videos_time.py
+./models/LatentSync/tools/download_web_videos.py
+./models/LatentSync/tools/move_files_recur.py
+./models/LatentSync/tools/occupy_gpu.py
+./models/LatentSync/tools/plot_videos_time_distribution.py
+./models/LatentSync/tools/remove_outdated_files.py
+./models/LatentSync/tools/write_fileslist.py
+./models/LatentSync/train_syncnet.sh
+./models/LatentSync/train_unet.sh
+./models/README.md
+./models/SadTalker/.gitignore
+./models/SadTalker/LICENSE
+./models/SadTalker/README.md
+./models/SadTalker/app_sadtalker.py
+./models/SadTalker/checkpoints/SadTalker_V0.0.2_256.safetensors
+./models/SadTalker/checkpoints/SadTalker_V0.0.2_512.safetensors
+./models/SadTalker/checkpoints/mapping_00109-model.pth.tar
+./models/SadTalker/checkpoints/mapping_00229-model.pth.tar
+./models/SadTalker/cog.yaml
+./models/SadTalker/docs/FAQ.md
+./models/SadTalker/docs/best_practice.md
+./models/SadTalker/docs/changlelog.md
+./models/SadTalker/docs/example_crop.gif
+./models/SadTalker/docs/example_crop_still.gif
+./models/SadTalker/docs/example_full.gif
+./models/SadTalker/docs/example_full_crop.gif
+./models/SadTalker/docs/example_full_enhanced.gif
+./models/SadTalker/docs/face3d.md
+./models/SadTalker/docs/free_view_result.gif
+./models/SadTalker/docs/install.md
+./models/SadTalker/docs/resize_good.gif
+./models/SadTalker/docs/resize_no.gif
+./models/SadTalker/docs/sadtalker_logo.png
+./models/SadTalker/docs/using_ref_video.gif
+./models/SadTalker/docs/webui_extension.md
+./models/SadTalker/examples/driven_audio/RD_Radio31_000.wav
+./models/SadTalker/examples/driven_audio/RD_Radio34_002.wav
+./models/SadTalker/examples/driven_audio/RD_Radio36_000.wav
+./models/SadTalker/examples/driven_audio/RD_Radio40_000.wav
+./models/SadTalker/examples/driven_audio/bus_chinese.wav
+./models/SadTalker/examples/driven_audio/chinese_news.wav
+./models/SadTalker/examples/driven_audio/chinese_poem1.wav
+./models/SadTalker/examples/driven_audio/chinese_poem2.wav
+./models/SadTalker/examples/driven_audio/deyu.wav
+./models/SadTalker/examples/driven_audio/eluosi.wav
+./models/SadTalker/examples/driven_audio/fayu.wav
+./models/SadTalker/examples/driven_audio/imagine.wav
+./models/SadTalker/examples/driven_audio/itosinger1.wav
+./models/SadTalker/examples/driven_audio/japanese.wav
+./models/SadTalker/examples/ref_video/WDA_AlexandriaOcasioCortez_000.mp4
+./models/SadTalker/examples/ref_video/WDA_KatieHill_000.mp4
+./models/SadTalker/examples/source_image/art_0.png
+./models/SadTalker/examples/source_image/art_1.png
+./models/SadTalker/examples/source_image/art_10.png
+./models/SadTalker/examples/source_image/art_11.png
+./models/SadTalker/examples/source_image/art_12.png
+./models/SadTalker/examples/source_image/art_13.png
+./models/SadTalker/examples/source_image/art_14.png
+./models/SadTalker/examples/source_image/art_15.png
+./models/SadTalker/examples/source_image/art_16.png
+./models/SadTalker/examples/source_image/art_17.png
+./models/SadTalker/examples/source_image/art_18.png
+./models/SadTalker/examples/source_image/art_19.png
+./models/SadTalker/examples/source_image/art_2.png
+./models/SadTalker/examples/source_image/art_20.png
+./models/SadTalker/examples/source_image/art_3.png
+./models/SadTalker/examples/source_image/art_4.png
+./models/SadTalker/examples/source_image/art_5.png
+./models/SadTalker/examples/source_image/art_6.png
+./models/SadTalker/examples/source_image/art_7.png
+./models/SadTalker/examples/source_image/art_8.png
+./models/SadTalker/examples/source_image/art_9.png
+./models/SadTalker/examples/source_image/full3.png
+./models/SadTalker/examples/source_image/full4.jpeg
+./models/SadTalker/examples/source_image/full_body_1.png
+./models/SadTalker/examples/source_image/full_body_2.png
+./models/SadTalker/examples/source_image/happy.png
+./models/SadTalker/examples/source_image/happy1.png
+./models/SadTalker/examples/source_image/people_0.png
+./models/SadTalker/examples/source_image/sad.png
+./models/SadTalker/examples/source_image/sad1.png
+./models/SadTalker/gfpgan/weights/alignment_WFLW_4HG.pth
+./models/SadTalker/gfpgan/weights/detection_Resnet50_Final.pth
+./models/SadTalker/inference.py
+./models/SadTalker/launcher.py
+./models/SadTalker/predict.py
+./models/SadTalker/quick_demo.ipynb
+./models/SadTalker/req.txt
+./models/SadTalker/requirements.txt
+./models/SadTalker/requirements3d.txt
+./models/SadTalker/scripts/download_models.sh
+./models/SadTalker/scripts/extension.py
+./models/SadTalker/scripts/test.sh
+./models/SadTalker/src/audio2exp_models/audio2exp.py
+./models/SadTalker/src/audio2exp_models/networks.py
+./models/SadTalker/src/audio2pose_models/audio2pose.py
+./models/SadTalker/src/audio2pose_models/audio_encoder.py
+./models/SadTalker/src/audio2pose_models/cvae.py
+./models/SadTalker/src/audio2pose_models/discriminator.py
+./models/SadTalker/src/audio2pose_models/networks.py
+./models/SadTalker/src/audio2pose_models/res_unet.py
+./models/SadTalker/src/config/auido2exp.yaml
+./models/SadTalker/src/config/auido2pose.yaml
+./models/SadTalker/src/config/facerender.yaml
+./models/SadTalker/src/config/facerender_still.yaml
+./models/SadTalker/src/config/similarity_Lm3D_all.mat
+./models/SadTalker/src/face3d/data/__init__.py
+./models/SadTalker/src/face3d/data/base_dataset.py
+./models/SadTalker/src/face3d/data/flist_dataset.py
+./models/SadTalker/src/face3d/data/image_folder.py
+./models/SadTalker/src/face3d/data/template_dataset.py
+./models/SadTalker/src/face3d/extract_kp_videos.py
+./models/SadTalker/src/face3d/extract_kp_videos_safe.py
+./models/SadTalker/src/face3d/models/__init__.py
+./models/SadTalker/src/face3d/models/arcface_torch/README.md
+./models/SadTalker/src/face3d/models/arcface_torch/backbones/__init__.py
+./models/SadTalker/src/face3d/models/arcface_torch/backbones/iresnet.py
+./models/SadTalker/src/face3d/models/arcface_torch/backbones/iresnet2060.py
+./models/SadTalker/src/face3d/models/arcface_torch/backbones/mobilefacenet.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/3millions.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/3millions_pfc.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/__init__.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/base.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/glint360k_mbf.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/glint360k_r100.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/glint360k_r18.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/glint360k_r34.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/glint360k_r50.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/ms1mv3_mbf.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/ms1mv3_r18.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/ms1mv3_r2060.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/ms1mv3_r34.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/ms1mv3_r50.py
+./models/SadTalker/src/face3d/models/arcface_torch/configs/speed.py
+./models/SadTalker/src/face3d/models/arcface_torch/dataset.py
+./models/SadTalker/src/face3d/models/arcface_torch/docs/eval.md
+./models/SadTalker/src/face3d/models/arcface_torch/docs/install.md
+./models/SadTalker/src/face3d/models/arcface_torch/docs/modelzoo.md
+./models/SadTalker/src/face3d/models/arcface_torch/docs/speed_benchmark.md
+./models/SadTalker/src/face3d/models/arcface_torch/eval/__init__.py
+./models/SadTalker/src/face3d/models/arcface_torch/eval/verification.py
+./models/SadTalker/src/face3d/models/arcface_torch/eval_ijbc.py
+./models/SadTalker/src/face3d/models/arcface_torch/inference.py
+./models/SadTalker/src/face3d/models/arcface_torch/losses.py
+./models/SadTalker/src/face3d/models/arcface_torch/onnx_helper.py
+./models/SadTalker/src/face3d/models/arcface_torch/onnx_ijbc.py
+./models/SadTalker/src/face3d/models/arcface_torch/partial_fc.py
+./models/SadTalker/src/face3d/models/arcface_torch/requirement.txt
+./models/SadTalker/src/face3d/models/arcface_torch/run.sh
+./models/SadTalker/src/face3d/models/arcface_torch/torch2onnx.py
+./models/SadTalker/src/face3d/models/arcface_torch/train.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/__init__.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/plot.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/utils_amp.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/utils_callbacks.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/utils_config.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/utils_logging.py
+./models/SadTalker/src/face3d/models/arcface_torch/utils/utils_os.py
+./models/SadTalker/src/face3d/models/base_model.py
+./models/SadTalker/src/face3d/models/bfm.py
+./models/SadTalker/src/face3d/models/facerecon_model.py
+./models/SadTalker/src/face3d/models/losses.py
+./models/SadTalker/src/face3d/models/networks.py
+./models/SadTalker/src/face3d/models/template_model.py
+./models/SadTalker/src/face3d/options/__init__.py
+./models/SadTalker/src/face3d/options/base_options.py
+./models/SadTalker/src/face3d/options/inference_options.py
+./models/SadTalker/src/face3d/options/test_options.py
+./models/SadTalker/src/face3d/options/train_options.py
+./models/SadTalker/src/face3d/util/BBRegressorParam_r.mat
+./models/SadTalker/src/face3d/util/__init__.py
+./models/SadTalker/src/face3d/util/detect_lm68.py
+./models/SadTalker/src/face3d/util/generate_list.py
+./models/SadTalker/src/face3d/util/html.py
+./models/SadTalker/src/face3d/util/load_mats.py
+./models/SadTalker/src/face3d/util/my_awing_arch.py
+./models/SadTalker/src/face3d/util/nvdiffrast.py
+./models/SadTalker/src/face3d/util/preprocess.py
+./models/SadTalker/src/face3d/util/skin_mask.py
+./models/SadTalker/src/face3d/util/test_mean_face.txt
+./models/SadTalker/src/face3d/util/util.py
+./models/SadTalker/src/face3d/util/visualizer.py
+./models/SadTalker/src/face3d/visualize.py
+./models/SadTalker/src/facerender/animate.py
+./models/SadTalker/src/facerender/modules/dense_motion.py
+./models/SadTalker/src/facerender/modules/discriminator.py
+./models/SadTalker/src/facerender/modules/generator.py
+./models/SadTalker/src/facerender/modules/keypoint_detector.py
+./models/SadTalker/src/facerender/modules/make_animation.py
+./models/SadTalker/src/facerender/modules/mapping.py
+./models/SadTalker/src/facerender/modules/util.py
+./models/SadTalker/src/facerender/sync_batchnorm/__init__.py
+./models/SadTalker/src/facerender/sync_batchnorm/batchnorm.py
+./models/SadTalker/src/facerender/sync_batchnorm/comm.py
+./models/SadTalker/src/facerender/sync_batchnorm/replicate.py
+./models/SadTalker/src/facerender/sync_batchnorm/unittest.py
+./models/SadTalker/src/generate_batch.py
+./models/SadTalker/src/generate_facerender_batch.py
+./models/SadTalker/src/gradio_demo.py
+./models/SadTalker/src/test_audio2coeff.py
+./models/SadTalker/src/utils/audio.py
+./models/SadTalker/src/utils/croper.py
+./models/SadTalker/src/utils/face_enhancer.py
+./models/SadTalker/src/utils/hparams.py
+./models/SadTalker/src/utils/init_path.py
+./models/SadTalker/src/utils/model2safetensor.py
+./models/SadTalker/src/utils/paste_pic.py
+./models/SadTalker/src/utils/preprocess.py
+./models/SadTalker/src/utils/safetensor_helper.py
+./models/SadTalker/src/utils/text2speech.py
+./models/SadTalker/src/utils/videoio.py
+./models/SadTalker/webui.bat
+./models/SadTalker/webui.sh
+./models/licenses/README.md
+./models/video-retalking/.gitignore
+./models/video-retalking/CODE_OF_CONDUCT.md
+./models/video-retalking/LICENSE
+./models/video-retalking/README.md
+./models/video-retalking/cog.yaml
+./models/video-retalking/docs/index.html
+./models/video-retalking/docs/static/css/bulma-carousel.min.css
+./models/video-retalking/docs/static/css/bulma-slider.min.css
+./models/video-retalking/docs/static/css/bulma.css.map.txt
+./models/video-retalking/docs/static/css/bulma.min.css
+./models/video-retalking/docs/static/css/fontawesome.all.min.css
+./models/video-retalking/docs/static/css/index.css
+./models/video-retalking/docs/static/images/pipeline.png
+./models/video-retalking/docs/static/images/teaser.png
+./models/video-retalking/docs/static/js/bulma-carousel.js
+./models/video-retalking/docs/static/js/bulma-carousel.min.js
+./models/video-retalking/docs/static/js/bulma-slider.js
+./models/video-retalking/docs/static/js/bulma-slider.min.js
+./models/video-retalking/docs/static/js/fontawesome.all.min.js
+./models/video-retalking/docs/static/js/index.js
+./models/video-retalking/docs/static/pdfs/sample.pdf
+./models/video-retalking/docs/static/videos/Ablation.mp4
+./models/video-retalking/docs/static/videos/Comparison.mp4
+./models/video-retalking/docs/static/videos/Results_in_the_wild.mp4
+./models/video-retalking/examples/audio/1.wav
+./models/video-retalking/examples/audio/2.wav
+./models/video-retalking/examples/face/1.mp4
+./models/video-retalking/examples/face/2.mp4
+./models/video-retalking/examples/face/3.mp4
+./models/video-retalking/examples/face/4.mp4
+./models/video-retalking/examples/face/5.mp4
+./models/video-retalking/inference.py
+./models/video-retalking/inference_videoretalking.sh
+./models/video-retalking/models/DNet.py
+./models/video-retalking/models/ENet.py
+./models/video-retalking/models/LNet.py
+./models/video-retalking/models/__init__.py
+./models/video-retalking/models/base_blocks.py
+./models/video-retalking/models/ffc.py
+./models/video-retalking/models/transformer.py
+./models/video-retalking/predict.py
+./models/video-retalking/quick_demo.ipynb
+./models/video-retalking/requirements.txt
+./models/video-retalking/third_part/GFPGAN/LICENSE
+./models/video-retalking/third_part/GFPGAN/gfpgan/__init__.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/__init__.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/arcface_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/gfpgan_bilinear_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/gfpganv1_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/gfpganv1_clean_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/stylegan2_bilinear_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/archs/stylegan2_clean_arch.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/data/__init__.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/data/ffhq_degradation_dataset.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/models/__init__.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/models/gfpgan_model.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/train.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/utils.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/version.py
+./models/video-retalking/third_part/GFPGAN/gfpgan/weights/README.md
+./models/video-retalking/third_part/GFPGAN/options/train_gfpgan_v1.yml
+./models/video-retalking/third_part/GFPGAN/options/train_gfpgan_v1_simple.yml
+./models/video-retalking/third_part/GPEN/align_faces.py
+./models/video-retalking/third_part/GPEN/face_detect/.DS_Store
+./models/video-retalking/third_part/GPEN/face_detect/data/FDDB/img_list.txt
+./models/video-retalking/third_part/GPEN/face_detect/data/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/data/config.py
+./models/video-retalking/third_part/GPEN/face_detect/data/data_augment.py
+./models/video-retalking/third_part/GPEN/face_detect/data/wider_face.py
+./models/video-retalking/third_part/GPEN/face_detect/facemodels/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/facemodels/net.py
+./models/video-retalking/third_part/GPEN/face_detect/facemodels/retinaface.py
+./models/video-retalking/third_part/GPEN/face_detect/layers/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/layers/functions/prior_box.py
+./models/video-retalking/third_part/GPEN/face_detect/layers/modules/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/layers/modules/multibox_loss.py
+./models/video-retalking/third_part/GPEN/face_detect/retinaface_detection.py
+./models/video-retalking/third_part/GPEN/face_detect/utils/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/utils/box_utils.py
+./models/video-retalking/third_part/GPEN/face_detect/utils/nms/__init__.py
+./models/video-retalking/third_part/GPEN/face_detect/utils/nms/py_cpu_nms.py
+./models/video-retalking/third_part/GPEN/face_detect/utils/timer.py
+./models/video-retalking/third_part/GPEN/face_model/face_gan.py
+./models/video-retalking/third_part/GPEN/face_model/gpen_model.py
+./models/video-retalking/third_part/GPEN/face_model/op/__init__.py
+./models/video-retalking/third_part/GPEN/face_model/op/fused_act.py
+./models/video-retalking/third_part/GPEN/face_model/op/fused_bias_act.cpp
+./models/video-retalking/third_part/GPEN/face_model/op/fused_bias_act_kernel.cu
+./models/video-retalking/third_part/GPEN/face_model/op/upfirdn2d.cpp
+./models/video-retalking/third_part/GPEN/face_model/op/upfirdn2d.py
+./models/video-retalking/third_part/GPEN/face_model/op/upfirdn2d_kernel.cu
+./models/video-retalking/third_part/GPEN/face_morpher/.gitignore
+./models/video-retalking/third_part/GPEN/face_morpher/README.rst
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/__init__.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/aligner.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/averager.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/blender.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/locator.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/morpher.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/plotter.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/videoer.py
+./models/video-retalking/third_part/GPEN/face_morpher/facemorpher/warper.py
+./models/video-retalking/third_part/GPEN/face_morpher/requirements.txt
+./models/video-retalking/third_part/GPEN/face_morpher/scripts/make_docs.sh
+./models/video-retalking/third_part/GPEN/face_morpher/scripts/publish_ghpages.sh
+./models/video-retalking/third_part/GPEN/face_morpher/setup.cfg
+./models/video-retalking/third_part/GPEN/face_morpher/setup.py
+./models/video-retalking/third_part/GPEN/face_parse/blocks.py
+./models/video-retalking/third_part/GPEN/face_parse/face_parsing.py
+./models/video-retalking/third_part/GPEN/face_parse/mask.png
+./models/video-retalking/third_part/GPEN/face_parse/model.py
+./models/video-retalking/third_part/GPEN/face_parse/parse_model.py
+./models/video-retalking/third_part/GPEN/face_parse/resnet.py
+./models/video-retalking/third_part/GPEN/face_parse/test.png
+./models/video-retalking/third_part/GPEN/gpen_face_enhancer.py
+./models/video-retalking/third_part/face3d/checkpoints/model_name/test_opt.txt
+./models/video-retalking/third_part/face3d/coeff_detector.py
+./models/video-retalking/third_part/face3d/data/__init__.py
+./models/video-retalking/third_part/face3d/data/base_dataset.py
+./models/video-retalking/third_part/face3d/data/flist_dataset.py
+./models/video-retalking/third_part/face3d/data/image_folder.py
+./models/video-retalking/third_part/face3d/data/template_dataset.py
+./models/video-retalking/third_part/face3d/data_preparation.py
+./models/video-retalking/third_part/face3d/extract_kp_videos.py
+./models/video-retalking/third_part/face3d/face_recon_videos.py
+./models/video-retalking/third_part/face3d/models/__init__.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/README.md
+./models/video-retalking/third_part/face3d/models/arcface_torch/backbones/__init__.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/backbones/iresnet.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/backbones/iresnet2060.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/backbones/mobilefacenet.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/3millions.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/3millions_pfc.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/__init__.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/base.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/glint360k_mbf.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/glint360k_r100.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/glint360k_r18.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/glint360k_r34.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/glint360k_r50.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/ms1mv3_mbf.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/ms1mv3_r18.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/ms1mv3_r2060.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/ms1mv3_r34.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/ms1mv3_r50.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/configs/speed.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/dataset.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/docs/eval.md
+./models/video-retalking/third_part/face3d/models/arcface_torch/docs/install.md
+./models/video-retalking/third_part/face3d/models/arcface_torch/docs/modelzoo.md
+./models/video-retalking/third_part/face3d/models/arcface_torch/docs/speed_benchmark.md
+./models/video-retalking/third_part/face3d/models/arcface_torch/eval/__init__.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/eval/verification.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/eval_ijbc.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/inference.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/losses.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/onnx_helper.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/onnx_ijbc.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/partial_fc.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/requirement.txt
+./models/video-retalking/third_part/face3d/models/arcface_torch/run.sh
+./models/video-retalking/third_part/face3d/models/arcface_torch/torch2onnx.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/train.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/__init__.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/plot.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/utils_amp.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/utils_callbacks.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/utils_config.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/utils_logging.py
+./models/video-retalking/third_part/face3d/models/arcface_torch/utils/utils_os.py
+./models/video-retalking/third_part/face3d/models/base_model.py
+./models/video-retalking/third_part/face3d/models/bfm.py
+./models/video-retalking/third_part/face3d/models/facerecon_model.py
+./models/video-retalking/third_part/face3d/models/losses.py
+./models/video-retalking/third_part/face3d/models/networks.py
+./models/video-retalking/third_part/face3d/models/template_model.py
+./models/video-retalking/third_part/face3d/options/__init__.py
+./models/video-retalking/third_part/face3d/options/base_options.py
+./models/video-retalking/third_part/face3d/options/inference_options.py
+./models/video-retalking/third_part/face3d/options/test_options.py
+./models/video-retalking/third_part/face3d/options/train_options.py
+./models/video-retalking/third_part/face3d/util/BBRegressorParam_r.mat
+./models/video-retalking/third_part/face3d/util/__init__.py
+./models/video-retalking/third_part/face3d/util/detect_lm68.py
+./models/video-retalking/third_part/face3d/util/generate_list.py
+./models/video-retalking/third_part/face3d/util/html.py
+./models/video-retalking/third_part/face3d/util/load_mats.py
+./models/video-retalking/third_part/face3d/util/nvdiffrast.py
+./models/video-retalking/third_part/face3d/util/preprocess.py
+./models/video-retalking/third_part/face3d/util/skin_mask.py
+./models/video-retalking/third_part/face3d/util/test_mean_face.txt
+./models/video-retalking/third_part/face3d/util/util.py
+./models/video-retalking/third_part/face3d/util/visualizer.py
+./models/video-retalking/third_part/face_detection/README.md
+./models/video-retalking/third_part/face_detection/__init__.py
+./models/video-retalking/third_part/face_detection/api.py
+./models/video-retalking/third_part/face_detection/detection/__init__.py
+./models/video-retalking/third_part/face_detection/detection/core.py
+./models/video-retalking/third_part/face_detection/detection/sfd/__init__.py
+./models/video-retalking/third_part/face_detection/detection/sfd/bbox.py
+./models/video-retalking/third_part/face_detection/detection/sfd/detect.py
+./models/video-retalking/third_part/face_detection/detection/sfd/net_s3fd.py
+./models/video-retalking/third_part/face_detection/detection/sfd/sfd_detector.py
+./models/video-retalking/third_part/face_detection/models.py
+./models/video-retalking/third_part/face_detection/utils.py
+./models/video-retalking/third_part/ganimation_replicate/LICENSE
+./models/video-retalking/third_part/ganimation_replicate/checkpoints/opt.txt
+./models/video-retalking/third_part/ganimation_replicate/checkpoints/run_script.sh
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183211/opt.txt
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183211/run_script.sh
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183229/opt.txt
+./models/video-retalking/third_part/ganimation_replicate/ckpts/ganimation/220419_183229/run_script.sh
+./models/video-retalking/third_part/ganimation_replicate/ckpts/opt.txt
+./models/video-retalking/third_part/ganimation_replicate/ckpts/run_script.sh
+./models/video-retalking/third_part/ganimation_replicate/data/__init__.py
+./models/video-retalking/third_part/ganimation_replicate/data/base_dataset.py
+./models/video-retalking/third_part/ganimation_replicate/data/celeba.py
+./models/video-retalking/third_part/ganimation_replicate/data/data_loader.py
+./models/video-retalking/third_part/ganimation_replicate/main.py
+./models/video-retalking/third_part/ganimation_replicate/model/__init__.py
+./models/video-retalking/third_part/ganimation_replicate/model/base_model.py
+./models/video-retalking/third_part/ganimation_replicate/model/ganimation.py
+./models/video-retalking/third_part/ganimation_replicate/model/model_utils.py
+./models/video-retalking/third_part/ganimation_replicate/model/stargan.py
+./models/video-retalking/third_part/ganimation_replicate/options.py
+./models/video-retalking/third_part/ganimation_replicate/solvers.py
+./models/video-retalking/third_part/ganimation_replicate/visualizer.py
+./models/video-retalking/utils/alignment_stit.py
+./models/video-retalking/utils/audio.py
+./models/video-retalking/utils/ffhq_preprocess.py
+./models/video-retalking/utils/flow_util.py
+./models/video-retalking/utils/hparams.py
+./models/video-retalking/utils/inference_utils.py
+./models/video-retalking/webUI.py
+./out/episode_001_preview/final_1080p.mp4
+./out/episode_001_preview/final_1080p_v2.mp4
+./out/episode_001_preview/logs/pipeline.log
+./out/episode_001_preview/run_report.json
+./out/episode_001_preview/stage1_audio/preprocessed.wav
+./out/episode_001_preview/stage2_diarize/diarization.json
+./out/episode_001_preview/stage2_diarize/speaker_a.wav
+./out/episode_001_preview/stage2_diarize/speaker_b.wav
+./out/episode_001_preview/stage4_composite/composited.mp4
+./out/episode_001_preview/stage5_subtitles/transcript_en.srt
+./out/episode_001_preview/stage6_export/final_1080p.mp4
+./out/episode_002_preview/final_720p_preview.mp4
+./out/episode_002_preview/stage1_audio/preprocessed.wav
+./out/episode_002_preview/stage5_subtitles/transcript_en.srt
+./out/episode_002_preview/stage6_export/composited_720p.mp4
 ./podcast_pipeline/__init__.py
-./podcast_pipeline/__pycache__
-./podcast_pipeline/__pycache__/__init__.cpython-313.pyc
-./podcast_pipeline/__pycache__/utils.cpython-313.pyc
 ./podcast_pipeline/audio.py
-./podcast_pipeline/avatar.py
 ./podcast_pipeline/composite.py
+./podcast_pipeline/diarize.py
 ./podcast_pipeline/export.py
 ./podcast_pipeline/lipsync.py
 ./podcast_pipeline/subtitles.py
+./podcast_pipeline/transcribe.py
 ./podcast_pipeline/utils.py
 ./requirements.txt
 ./run_podcast.py
-./scripts
+./scripts/lipsync_sync_api.py
+./scripts/prep_assets.py
+./scripts/self_check.log
 ./scripts/self_check.py
 ./scripts/setup_env.sh
 ```
 
-2. **Phase 1: Architecture Reconstruction**
+## Phase 1: Architecture Reconstruction
 
-What this system is supposed to be:
-- A single-entry local pipeline driven by [`run_podcast.py`](/Users/pranamyajain/hindi_podcast_local/run_podcast.py) that turns one Hindi audio file into a 1080p podcast video.
-- Pipeline stages live in `podcast_pipeline/`.
-- External local dependencies are FFmpeg, Faster-Whisper model files, a local AUTOMATIC1111 server, and intended local `SadTalker`/`MuseTalk` repos.
+### Entrypoints
+- `run_podcast.py`: orchestrates stages, writes `run_report.json`, and produces `final_720p.mp4` inside `--out`.
+- `scripts/prep_assets.py`: extracts `assets/speaker_{a,b}.jpg` and loops Veo videos to `assets/speaker_{a,b}_looped.mp4`.
+- `scripts/self_check.py`: sanity checks for assets and imports.
 
-What this system actually is:
-- The orchestrated product code is the `podcast_pipeline` package plus `run_podcast.py`.
-- That orchestrated code is incomplete because the required `models/SadTalker` and `models/MuseTalk` repos do not exist.
-- A separate vendored third-party repo, [`models/Wav2Lip`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip), plus manual output folders under `out/`, records the real experiments that produced the files the user saw.
-- The codebase therefore has two architectures:
-  1. Intended architecture: `run_podcast.py` -> modular pipeline.
-  2. Actual executed architecture during experimentation: ad-hoc FFmpeg + Wav2Lip scripts + hand-built preview HTML.
-
-Module responsibilities:
-
-- [`run_podcast.py`](/Users/pranamyajain/hindi_podcast_local/run_podcast.py)
-  - Responsibility: CLI entrypoint and stage orchestration.
-  - Input: CLI args, YAML config, input MP3/WAV.
-  - Output: stage directories, final MP4, SRT, `run_report.json`.
-  - Pattern: orchestrator.
-
-- [`podcast_pipeline/utils.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py)
-  - Responsibility: default config, logging, subprocess execution, GPU detection, JSON output, misc helpers.
-  - Input: config path, command args, media path.
-  - Output: merged config, logger, subprocess results, ffprobe JSON, VRAM size.
-  - Pattern: shared utility layer.
-
-- [`podcast_pipeline/audio.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/audio.py)
-  - Responsibility: normalize/convert input audio to 16 kHz mono WAV.
-  - Input: source audio path, stage dir, config.
-  - Output: `preprocessed.wav` or denoised variant.
-  - Pattern: pipeline stage.
-
-- [`podcast_pipeline/avatar.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py)
-  - Responsibility: generate or reuse avatar/background images.
-  - Input: assets dir, config, regen flags.
-  - Output: `assets/avatar.png`, `assets/background_1920x1080.png`.
-  - Pattern: asset generator/cache.
-  - Connection: local HTTP calls to AUTOMATIC1111.
-
-- [`podcast_pipeline/lipsync.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py)
-  - Responsibility: call external lipsync backend.
-  - Input: WAV, avatar, config, chosen backend, fps.
-  - Output: standardized talking-head MP4.
-  - Pattern: subprocess adapter.
-  - Connection: subprocess into missing `SadTalker` or `MuseTalk`.
-
-- [`podcast_pipeline/composite.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/composite.py)
-  - Responsibility: overlay talking-head video on background.
-  - Input: background image, talking-head video, audio WAV, config.
-  - Output: composited MP4.
-  - Pattern: FFmpeg compositor stage.
-
-- [`podcast_pipeline/subtitles.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py)
-  - Responsibility: local ASR and SRT creation.
-  - Input: WAV, local Faster-Whisper model dir, language.
-  - Output: `transcript_hi.srt`.
-  - Pattern: ASR stage.
-
-- [`podcast_pipeline/export.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py)
-  - Responsibility: burn subtitles and validate final MP4.
-  - Input: composited video, audio WAV, SRT, export settings.
-  - Output: final `final_1080p.mp4`.
-  - Pattern: finalizer/validator.
-
-- [`scripts/self_check.py`](/Users/pranamyajain/hindi_podcast_local/scripts/self_check.py)
-  - Responsibility: environment validation.
-  - Input: config path, strict flag.
-  - Output: exit code and printed checks.
-  - Pattern: diagnostic tool.
-
-- [`models/Wav2Lip/inference.py`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/inference.py)
-  - Responsibility: third-party lip-sync inference.
-  - Input: face image/video, audio, checkpoint, padding/crop/box controls.
-  - Output: lip-synced MP4.
-  - Pattern: vendored inference tool.
-  - Connection: used in actual experiments, not wired into `run_podcast.py`.
-
-Text dependency graph:
-
+### Implemented stage graph
 ```text
 run_podcast.py
-  -> podcast_pipeline.utils.load_config
-  -> podcast_pipeline.utils.setup_logger
-  -> podcast_pipeline.utils.probe_audio_duration
-  -> podcast_pipeline.utils.detect_gpu_vram_gb
-  -> podcast_pipeline.utils.choose_lipsync_backend
-  -> podcast_pipeline.audio.preprocess_audio
-      -> ffmpeg
-  -> podcast_pipeline.avatar.ensure_avatar
-      -> podcast_pipeline.avatar._generate_via_sd_api
-          -> requests -> local AUTOMATIC1111 HTTP API
-  -> podcast_pipeline.avatar.ensure_background
-      -> podcast_pipeline.avatar._generate_via_sd_api
-          -> requests -> local AUTOMATIC1111 HTTP API
-  -> podcast_pipeline.lipsync.generate_talking_head
-      -> podcast_pipeline.lipsync._run_backend
-          -> subprocess -> models/SadTalker/inference.py OR models/MuseTalk/inference.py
-      -> ffmpeg standardization
-  -> podcast_pipeline.composite.composite_video
-      -> ffmpeg overlay
-  -> podcast_pipeline.subtitles.generate_hindi_srt
-      -> faster_whisper.WhisperModel(local_files_only=True)
-  -> podcast_pipeline.export.burn_subtitles_and_export
-      -> ffmpeg subtitle burn-in
-      -> podcast_pipeline.export.validate_youtube_specs
-          -> podcast_pipeline.utils.ffprobe_streams
-              -> ffprobe
-  -> podcast_pipeline.utils.write_json
+  1) podcast_pipeline/audio.py:preprocess_audio
+  2) podcast_pipeline/transcribe.py:transcribe_audio
+  3) podcast_pipeline/diarize.py:diarize_audio
+  4a) podcast_pipeline/lipsync.py:render_speaker_full_video (HOST_A)
+  4b) podcast_pipeline/lipsync.py:render_speaker_full_video (HOST_B)
+  5) podcast_pipeline/composite.py:composite_video
+  6) podcast_pipeline/subtitles.py:generate_srt
+  7) podcast_pipeline/export.py:burn_subtitles_and_export
 
-scripts/self_check.py
-  -> torch import
-  -> faster_whisper import
-  -> path existence checks for whisper model / SD checkpoint / SadTalker / MuseTalk
-
-Actual experiment path under out/
-  -> manual preprocessing WAVs
-  -> vendored models/Wav2Lip/inference.py
-      -> models/Wav2Lip/audio.py
-      -> models/Wav2Lip/models/*
-      -> models/Wav2Lip/face_detection/*
-      -> ffmpeg muxing
-  -> manual preview HTML + python HTTP server logs/pid files
+External executables: ffmpeg, ffprobe
+Python deps: faster-whisper (transcribe), PyYAML (config)
+Third-party model repos invoked by subprocess: models/SadTalker (speech segments)
 ```
 
-Intended data flow:
-`audio input` -> `preprocessed.wav` -> `avatar/background` -> `talkinghead.mp4` -> `composited.mp4` -> `transcript_hi.srt` -> `final_1080p.mp4`
-
-Actual observed data flow in generated artifacts:
-`audio input` -> `preprocessed.wav` -> `manual source image / manual driver video` -> `models/Wav2Lip/inference.py` -> `wav2lip_*.mp4` -> optional upscale/composite -> preview HTML served locally
-
-3. **Phase 2: File-by-File Deep Analysis**
-
-I split this into source/config/docs, vendored third-party code, vendored metadata/binaries, and generated artifacts. Every file is covered.
-
-### Core source and config
-
-### [/.gitignore](/Users/pranamyajain/hindi_podcast_local/.gitignore)
-- Metadata: root git ignore file; excludes virtualenv, caches, `out/`, `models/`, logs, generated assets.
-- Code: none.
-- Quality: project state contradicts it; `models/` and `out/` are present anyway. This is evidence of tracked/generated drift.
-- Evolution: file says repo intended to stay clean; current tree does not.
-
-### [/README.md](/Users/pranamyajain/hindi_podcast_local/README.md)
-- Metadata: primary project documentation.
-- Code analysis: documents setup, offline model placement, expected pipeline, CLI usage.
-- Quality:
-  - Claims end-to-end local pipeline, but required `SadTalker` and `MuseTalk` repos are absent.
-  - Claims AUTOMATIC1111 or ComfyUI support; code implements only AUTOMATIC1111.
-  - Claims license records under `models/licenses`; only a placeholder README exists.
-- Evolution: reflects intended product, not current executable reality.
-
-### [/assets/README.md](/Users/pranamyajain/hindi_podcast_local/assets/README.md)
-- Metadata: asset placement note.
-- Code: none.
-- Quality: accurate but minimal; does not mention that avatar/background are generated through local HTTP API.
-- Evolution: starter-template doc.
-
-### [/configs/default_config.yaml](/Users/pranamyajain/hindi_podcast_local/configs/default_config.yaml)
-- Metadata: YAML config mirror of defaults.
-- Code analysis: sets seed, audio, avatar/background prompts, A1111 endpoint, lipsync backend paths, subtitle styling, export parameters.
-- Hardcoded assumptions: `http://127.0.0.1:7860`, RealisticVision checkpoint name, missing repo paths `models/SadTalker` and `models/MuseTalk`.
-- Quality:
-  - Duplicates defaults already hardcoded in [`podcast_pipeline/utils.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py), so config is split across code and YAML.
-  - Includes unsupported branches: config implies both backends are usable; repo contents contradict this.
-- Evolution: starter config never reconciled with actual manual Wav2Lip path.
-
-### [/docs/sample_timing_rtx3060.md](/Users/pranamyajain/hindi_podcast_local/docs/sample_timing_rtx3060.md)
-- Metadata: performance note.
-- Code: none.
-- Quality: aspirational only; there is no automated benchmark harness and current clean repo cannot run stage 3.
-- Evolution: documentation-first artifact.
-
-### [/environment.yml](/Users/pranamyajain/hindi_podcast_local/environment.yml)
-- Metadata: Conda environment spec.
-- Code analysis: pins Python 3.10, FFmpeg 6.1, PyTorch 2.4.*, CUDA 12.1, then pip-installs root requirements.
-- Quality:
-  - Conflicts with root `requirements.txt` pin of `torch==2.4.1`.
-  - Does not include Wav2Lip’s older dependency stack.
-- Evolution: written for orchestrator, not vendored Wav2Lip.
-
-### [/models/README.md](/Users/pranamyajain/hindi_podcast_local/models/README.md)
-- Metadata: model placement instructions.
-- Quality: incomplete; repo does not include the documented model tree for whisper, SadTalker, MuseTalk, or SD checkpoints.
-- Evolution: placeholder.
-
-### [/models/licenses/README.md](/Users/pranamyajain/hindi_podcast_local/models/licenses/README.md)
-- Metadata: placeholder for license records.
-- Quality: empty of actual license evidence. This means license compliance is not documented in-repo.
-- Evolution: intent existed; execution did not.
-
-### [/environment requirements.txt](/Users/pranamyajain/hindi_podcast_local/requirements.txt)
-- Metadata: root pip requirements.
-- Code analysis: `PyYAML`, `requests`, `Pillow`, `numpy`, `faster-whisper`, `torch`.
-- Quality:
-  - Missing deps for vendored Wav2Lip path: `librosa`, `scipy`, `opencv-python`, `tqdm`, `numba`, `python_speech_features`, possibly `dlib`.
-  - Root and vendored dependency stacks are incompatible.
-- Evolution: supports orchestrator only.
-
-### [/run_podcast.py](/Users/pranamyajain/hindi_podcast_local/run_podcast.py)
-- Metadata: main entrypoint.
-- Code analysis:
-  - `parse_args()`: CLI parsing.
-  - `resolve_path()`: absolute/relative resolution.
-  - `validate_input_audio()`: existence, extension, duration check.
-  - `run_self_check()`: binary/model/repo presence checks.
-  - `cleanup_intermediate_dirs()`: deletes stage dirs.
-  - `main()`: end-to-end orchestration.
-  - `_resolve_backend_paths()`: rewrites backend repo dirs absolute.
-  - `_resolve_whisper_path()`: rewrites whisper model path absolute.
-- Inputs/outputs: consumes CLI/config/audio, emits stage files and report JSON.
-- External dependencies: imports every pipeline module and utility helper.
-- Hardcoded assumptions:
-  - Only `.mp3` and `.wav` accepted.
-  - Hard max audio length 180s.
-  - Stage names and output file names fixed.
-- Quality:
-  - Hard dependency on CUDA via [`utils.detect_gpu_vram_gb()`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py#L248).
-  - Self-check does not validate AUTOMATIC1111 reachability.
-  - MuseTalk fallback to SadTalker only helps if SadTalker repo exists; it does not.
-- Evolution: architecture is modular and deliberate; actual repo contents never caught up.
-
-### [/podcast_pipeline/__init__.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/__init__.py)
-- Metadata: package export list.
-- Code: exports module names only.
-- Quality: fine.
-- Evolution: minimal package scaffolding.
-
-### [/podcast_pipeline/audio.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/audio.py)
-- Metadata: audio preprocessing stage.
-- Code analysis:
-  - `preprocess_audio()`: runs FFmpeg loudnorm/high-pass and optional `afftdn`.
-- Inputs/outputs: input audio -> `preprocessed.wav` or denoised version.
-- Dependencies: FFmpeg via `run_command`.
-- Hardcoded assumptions: high-pass at 20 Hz, 16 kHz mono, loudnorm target `I=-16:TP=-1.5:LRA=11`.
-- Quality:
-  - No cache reuse; always rewrites.
-  - No audio quality validation after preprocessing.
-- Evolution: simple and functional.
-
-### [/podcast_pipeline/avatar.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py)
-- Metadata: avatar/background generator.
-- Code analysis:
-  - `ensure_avatar()`: cache or generate avatar.
-  - `ensure_background()`: cache or generate background.
-  - `_generate_via_sd_api()`: local A1111 txt2img.
-  - `_set_checkpoint()`: mutate A1111 model checkpoint.
-  - `_validate_image()`: min size check.
-- Dependencies: `requests`, `PIL.Image`.
-- Hardcoded assumptions:
-  - Only `runner=automatic1111` is implemented at [`avatar.py` lines 95-101](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py#L95).
-  - Local HTTP endpoint must exist.
-  - Changes global A1111 checkpoint state.
-- Quality:
-  - No retry/backoff on HTTP calls.
-  - No isolation across concurrent runs.
-  - Documentation implies ComfyUI option; code does not support it.
-- Evolution: built as a “starter pipeline” and stopped there.
-
-### [/podcast_pipeline/composite.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/composite.py)
-- Metadata: FFmpeg compositor.
-- Code analysis:
-  - `composite_video()`: scales talking-head video and overlays onto static background.
-- Inputs/outputs: background PNG + talking-head MP4 + WAV -> composited MP4.
-- Dependencies: FFmpeg.
-- Hardcoded assumptions: fixed overlay width/x/y from config; no keying or segmentation.
-- Quality:
-  - Assumes static PiP composition is acceptable.
-  - No check for talking-head aspect mismatch beyond FFmpeg scaling.
-- Evolution: robust but basic.
-
-### [/podcast_pipeline/export.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py)
-- Metadata: subtitle burn-in and final validation.
-- Code analysis:
-  - `burn_subtitles_and_export()`
-  - `validate_youtube_specs()`
-  - `_parse_fps()`
-  - `_escape_filter_path()`
-- Dependencies: FFmpeg, ffprobe.
-- Hardcoded assumptions: H.264, AAC, `yuv420p`, `+faststart`, subtitle style fields.
-- Quality:
-  - Validation checks resolution/codecs/fps only; it does not verify `faststart` despite exporting with it. See [`export.py` lines 94-124](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py#L94).
-  - No validation that subtitles were actually rendered.
-- Evolution: functional but incomplete validator.
-
-### [/podcast_pipeline/lipsync.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py)
-- Metadata: backend adapter.
-- Code analysis:
-  - `generate_talking_head()`: call backend then standardize with FFmpeg.
-  - `_run_backend()`: constructs SadTalker or MuseTalk CLI calls.
-  - `_find_latest_video()`: find newest media file in output dir.
-- Dependencies: FFmpeg, external repos.
-- Hardcoded assumptions:
-  - Backend names limited to `sadtalker` / `musetalk`.
-  - Entry point named `inference.py`.
-  - Raw backend output can be detected by suffix scan.
-- Quality:
-  - Fatal on clean repo because required repos are absent at [`lipsync.py` lines 74-86](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L74).
-  - No schema/contract validation of backend outputs.
-- Evolution: intended abstraction layer not matched by repo contents.
-
-### [/podcast_pipeline/subtitles.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py)
-- Metadata: Hindi subtitle stage.
-- Code analysis:
-  - `generate_hindi_srt()`: load local faster-whisper model and transcribe.
-  - `_write_srt()`: serialize segments.
-  - `_format_srt_time()`
-  - `_cuda_available()`
-- Dependencies: `faster_whisper`, `torch` optionally.
-- Hardcoded assumptions:
-  - Output file name is always `transcript_hi.srt` at [`subtitles.py` line 48](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L48), even if `language != hi`.
-- Quality:
-  - SRT numbering bug: blank segments consume indexes because `enumerate()` happens before empty-text skip at [`subtitles.py` lines 58-64](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L58).
-  - Uses CPU fallback even though product constraint says GPU required.
-- Evolution: implementation exists, polish missing.
-
-### [/podcast_pipeline/utils.py](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py)
-- Metadata: shared utility module.
-- Code analysis:
-  - `DEFAULT_CONFIG`, `StageStat`, `PipelineError`, `StageTimer`
-  - config merge/load, logging, dir/binary checks
-  - `run_command()`, `ffprobe_streams()`, `probe_audio_duration()`
-  - GPU detection via torch then `nvidia-smi`
-  - backend chooser, JSON writer, misc helpers
-- Dependencies: `json`, `logging`, `subprocess`, `yaml`, `torch` optional.
-- Hardcoded assumptions:
-  - `backend_auto_threshold_gb=12`
-  - `RealisticVisionV60B1_v51HyperVAE.safetensors`
-  - strict CUDA requirement at [`utils.py` lines 248-257](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py#L248).
-- Quality:
-  - `load_config()` silently returns defaults if config file missing.
-  - `run_command()` has no timeout.
-  - `ffprobe_streams()` raises raw `CalledProcessError`, not wrapped `PipelineError`.
-  - `copy_if_needed()`, `as_posix()`, `list_relative_paths()` are currently unused.
-- Evolution: generic starter utils with some unused carry-over.
-
-### [/scripts/self_check.py](/Users/pranamyajain/hindi_podcast_local/scripts/self_check.py)
-- Metadata: environment check script.
-- Code analysis:
-  - `parse_args()`, `resolve_path()`, `main()`
-  - checks binaries, imports, model/repo paths.
-- Dependencies: `torch`, `faster_whisper`, `shutil`, `Path`.
-- Quality:
-  - Does not verify local A1111 server availability.
-  - Only checks repo/entrypoint existence, not backend weights/model internals.
-- Evolution: useful but incomplete health check.
-
-### [/scripts/setup_env.sh](/Users/pranamyajain/hindi_podcast_local/scripts/setup_env.sh)
-- Metadata: bootstrap shell script.
-- Code: creates `.venv`, upgrades pip, installs root requirements.
-- Quality:
-  - Does not install FFmpeg, CUDA stack, Faster-Whisper models, A1111, SadTalker, MuseTalk, or Wav2Lip deps.
-- Evolution: minimal bootstrap, not a reproducible environment builder.
-
-### Vendored Wav2Lip source
-
-### [/models/Wav2Lip/.gitignore](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.gitignore)
-- Metadata: vendored project ignore rules.
-- Quality: standard ignore file; not used by root repo behavior.
-- Evolution: upstream carry-over.
-
-### [/models/Wav2Lip/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/README.md)
-- Metadata: vendored upstream README.
-- Quality:
-  - Contains commercial Sync API instructions requiring an API key at lines 3-90.
-  - Open-source section explicitly states non-commercial restriction at lines 228-230 and 308-310.
-  - This alone violates the user’s required permissive-license constraint.
-- Evolution: upstream README with newer commercial overlay plus old OSS docs.
-
-### [/models/Wav2Lip/audio.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/audio.py)
-- Metadata: vendored audio feature extraction.
-- Code analysis: waveform load/save, preemphasis, STFT, spectrograms, mel basis creation, normalization.
-- Dependencies: `librosa`, `scipy`, `numpy`, vendored `hparams`.
-- Quality:
-  - `save_wavenet_wav()` uses deprecated `librosa.output.write_wav`.
-  - `_stft()` calls `_lws_processor(hp)` even though `_lws_processor()` takes no args at [`audio.py` lines 53-60](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/audio.py#L53).
-  - Mixed indentation around `_build_mel_basis()`.
-- Evolution: locally modified to use keyword args in `librosa.filters.mel`.
-
-### [/models/Wav2Lip/hparams.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/hparams.py)
-- Metadata: vendored hyperparameters.
-- Code analysis: `get_image_list`, `HParams`, global `hparams`, `hparams_debug_string`.
-- Hardcoded assumptions:
-  - `img_size=96`, `fps=25`, `batch_size=16`, `num_workers=16`
-  - absurd `nepochs=200000000000000000`
-- Quality:
-  - `hparams_debug_string()` calls `hparams.values()`, which does not exist on `HParams`, so it is broken at [`hparams.py` lines 98-100](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/hparams.py#L98).
-  - Indentation is inconsistent around lines 85-87.
-- Evolution: upstream training config, not adapted to current environment.
-
-### [/models/Wav2Lip/color_syncnet_train.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/color_syncnet_train.py)
-- Metadata: SyncNet discriminator training script.
-- Code analysis: dataset loading, cosine loss, train/eval loops, checkpointing, checkpoint load.
-- Dependencies: torch, numpy, cv2, audio/hparams/models.
-- Quality:
-  - Training-only; unused by product.
-  - Assumes dataset/filelists exist.
-- Evolution: pure upstream training path.
-
-### [/models/Wav2Lip/hq_wav2lip_train.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/hq_wav2lip_train.py)
-- Metadata: Wav2Lip+GAN training script.
-- Code analysis: GAN discriminator loss path, training loop, checkpointing.
-- Quality: training-only, environment mismatch with root.
-- Evolution: upstream.
-
-### [/models/Wav2Lip/preprocess.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/preprocess.py)
-- Metadata: dataset preprocessor.
-- Code analysis: frame extraction/audio extraction for LRS2-style training data.
-- Quality: unused by product; assumes dataset layout.
-- Evolution: upstream training support.
-
-### [/models/Wav2Lip/wav2lip_train.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/wav2lip_train.py)
-- Metadata: non-GAN Wav2Lip training script.
-- Code analysis: dataset, train/eval, SyncNet loss integration, checkpoints.
-- Quality: training-only; not compatible with root environment without extra deps.
-- Evolution: upstream.
-
-### [/models/Wav2Lip/inference.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/inference.py)
-- Metadata: core vendored inference script.
-- Code analysis:
-  - arg parsing
-  - smoothing boxes
-  - batched face detect or fixed box
-  - mel chunking
-  - model loading
-  - AVI writer and ffmpeg mux
-- Quality:
-  - Uses shell-string FFmpeg commands.
-  - Writes fixed `temp/result.avi`.
-  - Visible seam artifacts are expected when using fixed `--box`.
-  - Filename parsing uses `split('.')[1]`, unsafe for multiple dots.
-  - Local modifications load TorchScript archives and force `weights_only=False`; not documented.
-- Evolution: this is the actual path used in experiments.
-
-### [/models/Wav2Lip/models/__init__.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/__init__.py)
-- Metadata: model export file.
-- Code: exports `Wav2Lip`, `Wav2Lip_disc_qual`, `SyncNet_color`.
-- Quality: fine.
-
-### [/models/Wav2Lip/models/conv.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/conv.py)
-- Metadata: small conv block library.
-- Code analysis: `Conv2d`, `nonorm_Conv2d`, `Conv2dTranspose`.
-- Quality: standard upstream helper.
-
-### [/models/Wav2Lip/models/syncnet.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/syncnet.py)
-- Metadata: SyncNet audio/face encoder.
-- Code analysis: `SyncNet_color`.
-- Quality: training/inference component; not directly wrong.
-
-### [/models/Wav2Lip/models/wav2lip.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/wav2lip.py)
-- Metadata: model architecture definitions.
-- Code analysis: `Wav2Lip`, `Wav2Lip_disc_qual`.
-- Quality:
-  - `Wav2Lip_disc_qual.perceptual_forward()` hardcodes `.cuda()` at line 172 equivalent, breaking CPU-only discriminator use.
-  - Architecture itself is upstream.
-- Evolution: upstream.
-
-### [/models/Wav2Lip/face_detection/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/README.md)
-- Metadata: provenance note for face detection code.
-- Quality: accurate.
-
-### [/models/Wav2Lip/face_detection/__init__.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/__init__.py)
-- Metadata: package init.
-- Code: exports `FaceAlignment`, enums.
-- Quality: fine.
-
-### [/models/Wav2Lip/face_detection/api.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/api.py)
-- Metadata: face detection API wrapper.
-- Code analysis: enums and `FaceAlignment.get_detections_for_batch`.
-- Quality:
-  - Only detection path is used; landmark enums are vestigial here.
-  - Uses dynamic import string `face_detection.detection.<detector>`.
-- Evolution: adapted from `face_alignment`.
-
-### [/models/Wav2Lip/face_detection/detection/__init__.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/__init__.py)
-- Metadata: subpackage init.
-- Code: exports `FaceDetector`.
-- Quality: fine.
-
-### [/models/Wav2Lip/face_detection/detection/core.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/core.py)
-- Metadata: abstract face detector base.
-- Code analysis: constructor, `detect_from_directory`, tensor/path conversion.
-- Quality:
-  - Uses undefined `logger` in one branch if invalid device and not verbose.
-  - Abstract base only; product uses subclass.
-- Evolution: borrowed upstream.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__init__.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__init__.py)
-- Metadata: exports SFD detector class alias.
-- Quality: fine.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/bbox.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/bbox.py)
-- Metadata: bbox math helpers.
-- Code analysis: IOU fallback, encode/decode, NMS.
-- Quality: utility code; no product-specific issues.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/detect.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/detect.py)
-- Metadata: SFD inference helpers.
-- Code analysis: `detect`, `batch_detect`, `flip_detect`, `pts_to_bb`.
-- Quality:
-  - Threshold `> 0.05` is hardcoded.
-  - Returns zero arrays instead of explicit “no detections”, so callers must interpret carefully.
-- Evolution: upstream.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/net_s3fd.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/net_s3fd.py)
-- Metadata: S3FD network definition.
-- Code analysis: `L2Norm`, `s3fd`.
-- Quality: vendored model architecture.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/sfd_detector.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/sfd_detector.py)
-- Metadata: SFD detector implementation.
-- Code analysis: model load and batch detection wrapper.
-- Quality: depends on `s3fd.pth` presence; no graceful recovery if absent.
-
-### [/models/Wav2Lip/face_detection/models.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/models.py)
-- Metadata: FAN/ResNet landmark model defs.
-- Code analysis: `conv3x3`, `ConvBlock`, `Bottleneck`, `HourGlass`, `FAN`, `ResNetDepth`.
-- Quality: not used in current Wav2Lip inference path; vendored.
-
-### [/models/Wav2Lip/face_detection/utils.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/utils.py)
-- Metadata: heatmap/crop utility funcs.
-- Code analysis: gaussian drawing, transforms, crop, get_preds, flip, appdata path.
-- Quality:
-  - Uses deprecated `np.int`.
-  - Large upstream helper set; much of it is unused by current inference.
-- Evolution: borrowed upstream.
-
-### [/models/Wav2Lip/evaluation/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/README.md)
-- Metadata: evaluation instructions.
-- Quality:
-  - Requires separate external `syncnet_python` repo and extra env.
-  - Not usable from this repo alone.
-- Evolution: upstream evaluation docs.
-
-### [/models/Wav2Lip/evaluation/gen_videos_from_filelist.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/gen_videos_from_filelist.py)
-- Metadata: evaluation video generation script.
-- Code analysis: loads filelist, extracts temp audio, runs face detect, datagen, Wav2Lip inference, muxes output.
-- Quality:
-  - Uses shell FFmpeg commands.
-  - Hardcodes temp paths `../temp/temp.wav` and `../temp/result.avi`.
-  - Skips NaN mel clips silently.
-- Evolution: evaluation helper, not product code.
-
-### [/models/Wav2Lip/evaluation/real_videos_inference.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/real_videos_inference.py)
-- Metadata: real-video evaluation generator.
-- Code analysis: rescaling heuristic, face detect, frame duplication, Wav2Lip inference.
-- Quality:
-  - Multiple hardcoded thresholds.
-  - Uses shell FFmpeg and temp files.
-  - Evaluation-only.
-- Evolution: upstream.
-
-### [/models/Wav2Lip/evaluation/scores_LSE/SyncNetInstance_calc_scores.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/scores_LSE/SyncNetInstance_calc_scores.py)
-- Metadata: LSE-D/LSE-C score calculator.
-- Code analysis: `calc_pdist`, `SyncNetInstance`.
-- Quality:
-  - Hardcodes `.cuda()` in constructor and feature paths.
-  - Hardcodes 224x224 resize with comment “CHANGE BEFORE RELEASE”.
-  - Uses external `SyncNetModel` not present in this repo.
-- Evolution: upstream evaluation utility.
-
-### [/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_LRS.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_LRS.py)
-- Metadata: batch scoring wrapper.
-- Code analysis: loads `SyncNetInstance`, globs MP4s, averages scores.
-- Quality: requires external `syncnet_v2.model`; not reproducible from this repo.
-
-### [/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.py](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.py)
-- Metadata: score wrapper for real-videos pipeline.
-- Code analysis: resolves temp dirs, globs crop AVIs, prints scores.
-- Quality: depends on external preprocessing pipeline not included here.
-
-### [/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.sh](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.sh)
-- Metadata: shell wrapper.
-- Quality:
-  - Calls `run_pipeline.py`, which is not present in this repo.
-  - Hard fail if used.
-- Evolution: broken upstream helper in current vendored snapshot.
-
-### [/models/Wav2Lip/evaluation/test_filelists/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/README.md)
-- Metadata: filelist doc.
-- Quality: documentation only.
-
-### [/models/Wav2Lip/evaluation/test_filelists/ReSyncED/random_pairs.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/ReSyncED/random_pairs.txt)
-- Metadata: evaluation pair list.
-- Code: none.
-- Quality: data file only.
-
-### [/models/Wav2Lip/evaluation/test_filelists/ReSyncED/tts_pairs.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/ReSyncED/tts_pairs.txt)
-- Metadata: evaluation pair list.
-- Quality: data only.
-
-### [/models/Wav2Lip/evaluation/test_filelists/lrs2.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/lrs2.txt)
-- Metadata: large upstream evaluation file list.
-- Quality: data only.
-
-### [/models/Wav2Lip/evaluation/test_filelists/lrs3.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/lrs3.txt)
-- Metadata: large upstream evaluation file list.
-- Quality: data only.
-
-### [/models/Wav2Lip/evaluation/test_filelists/lrw.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/test_filelists/lrw.txt)
-- Metadata: large upstream evaluation file list.
-- Quality: data only.
-
-### [/models/Wav2Lip/filelists/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/filelists/README.md)
-- Metadata: training filelist placeholder note.
-- Quality: documentation only.
-
-### [/models/Wav2Lip/checkpoints/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints/README.md)
-- Metadata: checkpoint placeholder note.
-- Quality: documentation only.
-
-### [/models/Wav2Lip/checkpoints_from_folder/listing.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints_from_folder/listing.txt)
-- Metadata: failed `gdown` command output.
-- Quality: evidence of incomplete model-download workflow; not a valid manifest.
-- Evolution: setup attempt failed and was committed.
-
-### [/models/Wav2Lip/results/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/results/README.md)
-- Metadata: placeholder note for results folder.
-- Quality: documentation only.
-
-### [/models/Wav2Lip/temp/README.md](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/temp/README.md)
-- Metadata: placeholder note for temp folder.
-- Quality: accurate.
-
-### [/models/Wav2Lip/requirements.txt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/requirements.txt)
-- Metadata: vendored dependency pins.
-- Quality:
-  - Pins `torch==1.1.0`, `librosa==0.7.0`, old OpenCV.
-  - Incompatible with root environment.
-- Evolution: upstream old stack.
-
-### Vendored Wav2Lip metadata, git internals, models, and caches
-
-### [/models/Wav2Lip/.git/HEAD](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/HEAD)
-- Metadata: nested git HEAD.
-- Quality: proves vendored repo was cloned, not flattened.
-
-### [/models/Wav2Lip/.git/config](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/config)
-- Metadata: nested git config.
-- Quality: points to upstream origin `https://github.com/Rudrabha/Wav2Lip.git`; nested git inside parent repo is a maintenance risk.
-
-### [/models/Wav2Lip/.git/description](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/description)
-- Metadata: default git description.
-- Quality: irrelevant runtime-wise.
-
-### [/models/Wav2Lip/.git/info/exclude](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/info/exclude)
-- Metadata: default git exclude.
-- Quality: irrelevant runtime-wise.
-
-### [/models/Wav2Lip/.git/logs/HEAD](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/logs/HEAD)
-- Metadata: clone log.
-- Quality: leaks personal username/email in repository content.
-
-### [/models/Wav2Lip/.git/logs/refs/heads/master](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/logs/refs/heads/master)
-- Metadata: clone log.
-- Quality: same privacy leak.
-
-### [/models/Wav2Lip/.git/logs/refs/remotes/origin/HEAD](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/logs/refs/remotes/origin/HEAD)
-- Metadata: clone log.
-- Quality: same privacy leak.
-
-### [/models/Wav2Lip/.git/packed-refs](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/packed-refs)
-- Metadata: git refs metadata.
-- Quality: irrelevant runtime-wise.
-
-### [/models/Wav2Lip/.git/refs/heads/master](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/refs/heads/master)
-- Metadata: commit pointer.
-- Quality: vendored git state.
-
-### [/models/Wav2Lip/.git/refs/remotes/origin/HEAD](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/refs/remotes/origin/HEAD)
-- Metadata: remote HEAD pointer.
-- Quality: vendored git state.
-
-### [/models/Wav2Lip/.git/hooks/applypatch-msg.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/applypatch-msg.sample)
-- Metadata: stock git sample hook.
-- Code: no product role.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/commit-msg.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/commit-msg.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/fsmonitor-watchman.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/fsmonitor-watchman.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/post-update.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/post-update.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-applypatch.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-applypatch.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-commit.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-commit.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-merge-commit.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-merge-commit.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-push.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-push.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-rebase.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-rebase.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/pre-receive.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/pre-receive.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/prepare-commit-msg.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/prepare-commit-msg.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/push-to-checkout.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/push-to-checkout.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/sendemail-validate.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/sendemail-validate.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/hooks/update.sample](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/hooks/update.sample)
-- Metadata: stock sample hook.
-- Quality: irrelevant noise.
-
-### [/models/Wav2Lip/.git/index](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/index)
-- Metadata: binary git index.
-- Quality: nested VCS payload; not source.
-
-### [/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.idx](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.idx)
-- Metadata: git pack index.
-- Quality: nested VCS payload.
-
-### [/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.pack](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.pack)
-- Metadata: git object pack.
-- Quality: nested VCS payload.
-
-### [/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.rev](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/.git/objects/pack/pack-e451cea97c20da0890252c0081570b559c6f0e29.rev)
-- Metadata: git reverse index.
-- Quality: nested VCS payload.
-
-### [/models/Wav2Lip/__pycache__/audio.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/__pycache__/audio.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated, stale-prone, should not be source of truth.
-
-### [/models/Wav2Lip/__pycache__/hparams.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/__pycache__/hparams.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/checkpoints/wav2lip_gan.pth](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints/wav2lip_gan.pth)
-- Metadata: 145.8 MB model checkpoint.
-- Role: vendored GAN checkpoint.
-- Quality: model blob only; license in upstream README is non-commercial.
-
-### [/models/Wav2Lip/checkpoints_from_folder/.DS_Store](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints_from_folder/.DS_Store)
-- Metadata: macOS Finder metadata.
-- Quality: noise.
-
-### [/models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-GAN.pt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-GAN.pt)
-- Metadata: 145.8 MB checkpoint.
-- Role: actual checkpoint used in `userface_multiframe` logs.
-- Quality: local blob; undocumented provenance in repo.
-
-### [/models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-NOGAN.pt](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-NOGAN.pt)
-- Metadata: 145.8 MB checkpoint.
-- Role: actual checkpoint used in `syncfix` and `refstyle` logs.
-- Quality: local blob; undocumented provenance in repo.
-
-### [/models/Wav2Lip/face_detection/__pycache__/__init__.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/__pycache__/__init__.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/__pycache__/api.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/__pycache__/api.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/__pycache__/models.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/__pycache__/models.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/__pycache__/utils.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/__pycache__/utils.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/__pycache__/__init__.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/__pycache__/__init__.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/__pycache__/core.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/__pycache__/core.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__pycache__/__init__.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__pycache__/__init__.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__pycache__/bbox.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__pycache__/bbox.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__pycache__/detect.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__pycache__/detect.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__pycache__/net_s3fd.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__pycache__/net_s3fd.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/__pycache__/sfd_detector.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/__pycache__/sfd_detector.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/face_detection/detection/sfd/s3fd.pth](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/face_detection/detection/sfd/s3fd.pth)
-- Metadata: 89.8 MB detector weights.
-- Role: required by vendored Wav2Lip face detector.
-- Quality: binary blob; no in-repo license record.
-
-### [/models/Wav2Lip/models/__pycache__/__init__.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/__pycache__/__init__.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/models/__pycache__/conv.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/__pycache__/conv.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/models/__pycache__/syncnet.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/__pycache__/syncnet.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/models/__pycache__/wav2lip.cpython-310.pyc](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/models/__pycache__/wav2lip.cpython-310.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/models/Wav2Lip/temp/result.avi](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/temp/result.avi)
-- Metadata: temporary AVI, 1280x720, MPEG-4, 24 fps, 11.875s.
-- Role: temp output from latest Wav2Lip run.
-- Quality: non-final temp artifact; stale and overwritten by subsequent runs.
-- Evolution: confirms ad-hoc recent manual usage.
-
-### Generated outputs and local-host artifacts
-
-### [/out/.DS_Store](/Users/pranamyajain/hindi_podcast_local/out/.DS_Store)
-- Metadata: Finder metadata.
-- Quality: noise.
-
-### [/out/episode_old_rj_1_fallback/.DS_Store](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/.DS_Store)
-- Metadata: Finder metadata.
-- Quality: noise.
-
-### [/out/episode_old_rj_1_fallback/assets/avatar_rgba.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/assets/avatar_rgba.png)
-- Metadata: generated 1024x1024 PNG.
-- Role: fallback avatar asset.
-- Quality: output artifact only.
-
-### [/out/episode_old_rj_1_fallback/assets/background_1920x1080.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/assets/background_1920x1080.png)
-- Metadata: generated 1920x1080 background PNG.
-- Role: fallback background.
-- Quality: output artifact only.
-
-### [/out/episode_old_rj_1_fallback/index.html](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/index.html)
-- Metadata: preview page.
-- Role: local playback wrapper for fallback render.
-- Quality: hand-authored static HTML; not generated by pipeline code in repo.
-- Evolution: confirms manual local-host step.
-
-### [/out/episode_old_rj_1_fallback/logs/http_server.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/logs/http_server.log)
-- Metadata: empty log.
-- Role: placeholder from local HTTP server.
-- Quality: no forensic value beyond showing hosting step existed.
-
-### [/out/episode_old_rj_1_fallback/logs/http_server.pid](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/logs/http_server.pid)
-- Metadata: process ID file.
-- Role: local server bookkeeping.
-- Quality: stale after process exits.
-
-### [/out/episode_old_rj_1_fallback/stage1_audio/preprocessed.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/stage1_audio/preprocessed.wav)
-- Metadata: 92.357s PCM 16 kHz mono WAV.
-- Role: preprocessed audio.
-- Quality: stage artifact.
-
-### [/out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi.srt](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi.srt)
-- Metadata: generated Hindi SRT.
-- Role: subtitle output from one ASR pass.
-- Quality: transcript contains obvious Hindi word errors; this is evidence that default subtitle quality is not production-grade.
-
-### [/out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi_medium.srt](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/stage5_subtitles/transcript_hi_medium.srt)
-- Metadata: second SRT variant.
-- Role: likely rerun with medium model or manual overwrite.
-- Quality: better segmentation than the first file, still error-prone.
-- Evolution: evidence of iteration.
-
-### [/out/episode_old_rj_1_fallback/stage6_export/final_1080p.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_fallback/stage6_export/final_1080p.mp4)
-- Metadata: H.264 1920x1080 25 fps MP4, 94.36s.
-- Role: fallback final video.
-- Quality: output duration does not exactly match preprocessed WAV; potential timing drift.
-
-### [/out/episode_old_rj_1_realhost_web/final_1080p.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/final_1080p.mp4)
-- Metadata: H.264 1920x1080 24 fps MP4, 92.416s.
-- Role: served final video for “sync-fix”.
-- Quality: artifact only.
-
-### [/out/episode_old_rj_1_realhost_web/http_server.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/http_server.log)
-- Metadata: HTTP HEAD requests from localhost.
-- Role: confirms local hosting worked.
-- Quality: artifact only.
-
-### [/out/episode_old_rj_1_realhost_web/http_server.pid](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/http_server.pid)
-- Metadata: PID file.
-- Quality: stale.
-
-### [/out/episode_old_rj_1_realhost_web/index.html](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/index.html)
-- Metadata: preview page for “sync-fix”.
-- Quality: hand-authored static page; not represented in source pipeline.
-
-### [/out/episode_old_rj_1_realhost_web/preview_frame.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/preview_frame.png)
-- Metadata: preview PNG.
-- Role: visual snapshot of one render.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_realhost_web/preview_syncfix_final.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/preview_syncfix_final.png)
-- Metadata: preview PNG.
-- Role: snapshot of sync-fix render.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_realhost_web/preview_userface.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_realhost_web/preview_userface.png)
-- Metadata: preview PNG.
-- Role: snapshot of userface render.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_reallipsync/assets/background_real_1920x1080.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/assets/background_real_1920x1080.png)
-- Metadata: 1920x1080 PNG.
-- Role: background asset for “reallipsync” iteration.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_reallipsync/assets/source_face.jpg](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/assets/source_face.jpg)
-- Metadata: 720x720 JPEG.
-- Role: source face for Wav2Lip run.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_reallipsync/logs/wav2lip_infer.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/logs/wav2lip_infer.log)
-- Metadata: inference log.
-- Role: forensic record of Wav2Lip run.
-- Quality:
-  - Confirms CPU inference.
-  - Confirms TorchScript archive warning.
-  - Confirms mux path into `wav2lip_raw.mp4`.
-- Evolution: first real-face experiment.
-
-### [/out/episode_old_rj_1_reallipsync/stage1_audio/preprocessed.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/stage1_audio/preprocessed.wav)
-- Metadata: 92.357s PCM WAV.
-- Role: stage artifact.
-
-### [/out/episode_old_rj_1_reallipsync/stage3_lipsync/frame_100.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/stage3_lipsync/frame_100.png)
-- Metadata: frame capture.
-- Role: debug snapshot.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_reallipsync/stage3_lipsync/wav2lip_raw.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/stage3_lipsync/wav2lip_raw.mp4)
-- Metadata: H.264 720x720 25 fps MP4, 92.358s.
-- Role: direct Wav2Lip output.
-- Quality: artifact; not final format.
-
-### [/out/episode_old_rj_1_reallipsync/stage6_export/final_realhost_1080p.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_reallipsync/stage6_export/final_realhost_1080p.mp4)
-- Metadata: H.264 1920x1080 25 fps MP4, 92.416s.
-- Role: composited/exported version.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/assets/reference_motion.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/assets/reference_motion.mp4)
-- Metadata: H.264 1280x720 24 fps, 8s.
-- Role: reference motion clip.
-- Quality: artifact proving reference-style approach was manual.
-
-### [/out/episode_old_rj_1_refstyle_v3/calib/audio_12s.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/calib/audio_12s.wav)
-- Metadata: 12s PCM WAV.
-- Role: calibration excerpt.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/calib/calib_auto.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/calib/calib_auto.log)
-- Metadata: calibration log.
-- Role: forensic evidence of automated calibration attempt.
-- Quality: artifact only.
-
-### [/out/episode_old_rj_1_refstyle_v3/calib/driver_12s.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/calib/driver_12s.mp4)
-- Metadata: H.264 1280x720 24 fps, 12s.
-- Role: calibration driver video.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/calib/out_auto.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/calib/out_auto.mp4)
-- Metadata: H.264 1280x720 24 fps, 12s.
-- Role: calibration output.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/logs/wav2lip_infer.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/logs/wav2lip_infer.log)
-- Metadata: inference log.
-- Role: confirms 24 fps reference-style Wav2Lip run with fixed box.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage1_audio/preprocessed.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage1_audio/preprocessed.wav)
-- Metadata: 92.357s PCM WAV.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_driver_92s.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_driver_92s.mp4)
-- Metadata: H.264 1280x720 24 fps, 92.375s.
-- Role: looped reference motion driver.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_fwd.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_fwd.mp4)
-- Metadata: H.264 1280x720 24 fps, 8s.
-- Role: forward driver segment.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_pingpong.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_pingpong.mp4)
-- Metadata: H.264 1280x720 24 fps, 16s.
-- Role: ping-pong loop driver.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_rev.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage2_driver/ref_rev.mp4)
-- Metadata: H.264 1280x720 24 fps, 8s.
-- Role: reversed driver segment.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/contact_refstyle.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/contact_refstyle.png)
-- Metadata: contact-sheet PNG.
-- Role: debug visual.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/frame360.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/frame360.png)
-- Metadata: debug frame PNG.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/wav2lip_refstyle.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_refstyle_v3/stage3_lipsync/wav2lip_refstyle.mp4)
-- Metadata: H.264 1280x720 24 fps, 92.358s.
-- Role: reference-style Wav2Lip output.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/assets/source_face.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/assets/source_face.png)
-- Metadata: 2528x1686 RGBA source image.
-- Role: sync-fix input face.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/assets/source_face_1280x720.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/assets/source_face_1280x720.png)
-- Metadata: normalized source image.
-- Role: sync-fix resized source.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/logs/wav2lip_infer.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/logs/wav2lip_infer.log)
-- Metadata: empty log.
-- Quality: failed or redirected run left no log body.
-
-### [/out/episode_old_rj_1_syncfix_v2/stage1_audio/preprocessed.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/stage1_audio/preprocessed.wav)
-- Metadata: 92.357s PCM WAV.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/stage3_lipsync/preview_syncfix.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/stage3_lipsync/preview_syncfix.png)
-- Metadata: preview PNG.
-- Role: debug snapshot.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/stage3_lipsync/wav2lip_syncfix.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/stage3_lipsync/wav2lip_syncfix.mp4)
-- Metadata: H.264 1280x720 24 fps, 92.358s.
-- Role: sync-fix Wav2Lip output.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_syncfix_v2/stage6_export/final_1080p_syncfix.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_syncfix_v2/stage6_export/final_1080p_syncfix.mp4)
-- Metadata: H.264 1920x1080 24 fps, 92.416s.
-- Role: exported sync-fix final.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/.DS_Store](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/.DS_Store)
-- Metadata: Finder metadata.
-- Quality: noise.
-
-### [/out/episode_old_rj_1_userface_multiframe/assets/host_image.png](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/assets/host_image.png)
-- Metadata: 2528x1686 source host image.
-- Role: user-supplied face.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/logs/wav2lip_infer.log](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/logs/wav2lip_infer.log)
-- Metadata: detailed inference log.
-- Role: confirms CPU inference with GAN checkpoint and fixed bounding box.
-- Quality: artifact; explains why output blurred and over-articulated.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage1_audio/preprocessed.wav](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage1_audio/preprocessed.wav)
-- Metadata: 92.357s PCM WAV.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_face_92s.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_face_92s.mp4)
-- Metadata: H.264 1280x720 25 fps, 92.36s, `yuvj420p`.
-- Role: assembled looping multi-frame driver video.
-- Quality: artifact; driver approach causes mouth-speed drift because loop timing is decoupled from phonemes.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_forward.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_forward.mp4)
-- Metadata: 1.6s forward lip cycle.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_pingpong.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_pingpong.mp4)
-- Metadata: 3.2s ping-pong cycle.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_reverse.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage2_driver/driver_reverse.mp4)
-- Metadata: 1.6s reverse cycle.
-- Role: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage3_lipsync/wav2lip_userface.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage3_lipsync/wav2lip_userface.mp4)
-- Metadata: H.264 1280x720 25 fps, 92.358s.
-- Role: multi-image driver Wav2Lip output.
-- Quality: artifact.
-
-### [/out/episode_old_rj_1_userface_multiframe/stage6_export/final_1080p_userface.mp4](/Users/pranamyajain/hindi_podcast_local/out/episode_old_rj_1_userface_multiframe/stage6_export/final_1080p_userface.mp4)
-- Metadata: H.264 1920x1080 25 fps, 92.416s, high bitrate.
-- Role: exported userface render.
-- Quality: artifact.
-
-### [/out/reference_inspect/reference_contact.png](/Users/pranamyajain/hindi_podcast_local/out/reference_inspect/reference_contact.png)
-- Metadata: debug contact-sheet PNG.
-- Role: inspection artifact.
-- Quality: artifact.
-
-### Root package caches
-
-### [/podcast_pipeline/__pycache__/__init__.cpython-313.pyc](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/__pycache__/__init__.cpython-313.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-### [/podcast_pipeline/__pycache__/utils.cpython-313.pyc](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/__pycache__/utils.cpython-313.pyc)
-- Metadata: compiled cache.
-- Quality: generated only.
-
-4. **Phase 3: Pipeline Integrity Audit**
-
-What triggers the pipeline:
-- Intended trigger: `python run_podcast.py --audio ... --out ...`
-- Actual observed trigger for successful real-person outputs: manual Wav2Lip invocation plus manual FFmpeg and preview-page construction.
-
-Exact intended sequence:
-1. Parse CLI.
-2. Load YAML config with code defaults merged in.
-3. Validate input path/extension/duration.
-4. Detect CUDA VRAM.
-5. Auto-select backend: `musetalk` if VRAM >= threshold, else `sadtalker`.
-6. Stage 1: preprocess audio to 16 kHz mono WAV.
-7. Stage 2: generate/reuse avatar and background via local A1111 API.
-8. Stage 3: run lipsync backend subprocess.
-9. Stage 4: composite foreground video over background.
-10. Stage 5: generate SRT from local Faster-Whisper.
-11. Stage 6: burn subtitles and export final MP4.
-12. Write `run_report.json`.
-13. Optionally delete intermediate dirs.
-
-Exact actual failure point on clean repo:
-- Stage 3. [`podcast_pipeline/lipsync.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L80) raises if `models/SadTalker` or `models/MuseTalk` does not exist. They do not exist in this repo.
-
-Actual manual execution path evidenced by artifacts:
-1. Input audio normalized to `preprocessed.wav`.
-2. User/host source image chosen.
-3. Either:
-   - static image -> Wav2Lip directly, or
-   - looping reference/driver video built first.
-4. [`models/Wav2Lip/inference.py`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/inference.py) generates `temp/result.avi`.
-5. FFmpeg muxes `temp/result.avi` + `preprocessed.wav` -> `wav2lip_*.mp4`.
-6. Optional upscale/composite/export to 1080p.
-7. Manual HTML page created under `out/*/index.html`.
-8. Local HTTP server serves the result.
-
-Where data transforms:
-- Input compressed audio -> PCM WAV in stage 1.
-- Text prompt -> avatar/background PNG in stage 2.
-- Avatar PNG + WAV -> talking-head MP4 in stage 3.
-- Talking-head MP4 + background PNG -> composited MP4 in stage 4.
-- WAV -> SRT in stage 5.
-- Composited MP4 + WAV + SRT -> final MP4 in stage 6.
-
-Silent-failure points:
-- [`subtitles.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L58): blank segments silently skip numbering.
-- [`export.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py#L94): validator does not check `faststart`; file can violate documented promise without being flagged.
-- [`avatar.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py#L144): checkpoint mutation can change future outputs globally without local record.
-- [`models/Wav2Lip/evaluation/gen_videos_from_filelist.py`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/gen_videos_from_filelist.py): clips with NaN mel are skipped silently.
-
-Hard-failure points:
-- No CUDA GPU -> [`utils.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py#L257) throws.
-- Missing Faster-Whisper model dir -> [`subtitles.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L26) throws.
-- Missing A1111 server -> [`avatar.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py#L125) throws.
-- Missing SadTalker/MuseTalk repos -> [`lipsync.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L80) throws.
-- Missing video output from backend -> [`lipsync.py`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L115) throws.
-- Missing subtitles -> export stage fails.
-- Vendored Wav2Lip eval scripts -> fail due missing external repos/models/scripts.
-
-Determinism:
-- Intended avatar/background generation is deterministic if seed and checkpoint stay fixed.
-- Actual system is not fully deterministic because:
-  - A1111 server global checkpoint state is mutable.
-  - backend repos are external and not pinned in-repo.
-  - Wav2Lip face detection uses runtime batching and can vary by environment.
-  - manual experiment path is not codified, so operator choices dominate.
-
-5. **Phase 4: Dependency and Environment Audit**
-
-External binaries:
-- `ffmpeg`: required, checked by self-check.
-- `ffprobe`: required, checked by self-check.
-- `nvidia-smi`: optional for VRAM fallback.
-- `python`: used to invoke backends.
-- Additional binary use in vendored Wav2Lip path: FFmpeg again.
-
-Python libraries used by root pipeline:
-- `PyYAML`
-- `requests`
-- `Pillow`
-- `numpy`
-- `faster-whisper`
-- `torch`
-
-Python libraries used by vendored Wav2Lip code but missing from root requirements:
-- `librosa`
-- `scipy`
-- `opencv-python`
-- `opencv-contrib-python`
-- `tqdm`
-- `numba`
-- `python_speech_features`
-- `dlib` in eval helpers
-
-Model/repo dependencies expected by root pipeline:
-- Faster-Whisper model dir at `models/faster-whisper-medium` or configured path: missing from repo.
-- AUTOMATIC1111 local server with SD checkpoint `RealisticVisionV60B1_v51HyperVAE.safetensors`: not shipped.
-- `models/SadTalker`: missing.
-- `models/MuseTalk`: missing.
-
-Model/repo dependencies actually present:
-- Vendored `models/Wav2Lip` repo.
-- `models/Wav2Lip/checkpoints/wav2lip_gan.pth`
-- `models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-GAN.pt`
-- `models/Wav2Lip/checkpoints_from_folder/Wav2Lip-SD-NOGAN.pt`
-- `models/Wav2Lip/face_detection/detection/sfd/s3fd.pth`
-
-Versioning state:
-- Root env partially pinned.
-- Vendored Wav2Lip deps pinned to obsolete versions that conflict with root.
-- SadTalker/MuseTalk versions cannot be audited because repos are absent.
-- A1111 version cannot be audited because it is external to repo.
-
-Reproducibility from scratch using only this repo:
-- No.
-- Missing:
-  - Faster-Whisper model files
-  - SD checkpoint and server setup
-  - SadTalker repo
-  - MuseTalk repo
-  - license records
-  - Wav2Lip-compatible environment pinning in root env
-- Therefore repo is not self-contained.
-
-Open-source/free-only and license compliance:
-- Hard failure on permissive-license constraint:
-  - Vendored Wav2Lip README explicitly restricts OSS version to personal/research/non-commercial use. That is not MIT/Apache/LGPL-equivalent.
-- Potential additional license gap:
-  - RealisticVision V6 checkpoint license is not documented in-repo.
-- Documentation-only proprietary dependency:
-  - Vendored Wav2Lip README contains Sync.so API-key-based commercial instructions. Those are not executed by this project, but they are in the codebase.
-
-6. **Phase 5: Gap Analysis Between Intent and Implementation**
-
-Clearly intended but not implemented:
-- ComfyUI support.
-- End-to-end usable SadTalker/MuseTalk path inside repo.
-- Automated local hosting of final result.
-- Model license registry under `models/licenses`.
-- Reproducible full environment bootstrap.
-
-Partially implemented:
-- Avatar/background generation: works only via local A1111; no alternative runner.
-- Subtitle generation: works if model exists; quality and serialization issues remain.
-- Export validation: checks basic codecs/resolution/fps, not full YouTube compliance.
-- Self-check: checks some files, not actual service readiness.
-
-Implemented but wrong:
-- `subtitles.py` always writes `transcript_hi.srt` even for non-Hindi language argument.
-- `subtitles.py` SRT numbering can skip indexes.
-- `run_podcast.py` claims backend auto-selection, but both backend repos are absent.
-- Root repo claims no cloud/API behavior; code uses local HTTP API. That is local-only, but still an API call boundary.
-
-In docs/config but unsupported in code:
-- ComfyUI.
-- Fully working MuseTalk path.
-- Fully working SadTalker path.
-- Complete license documentation.
-- Performance claims for RTX 3060 as a verified system property.
-
-Supported in code but undocumented:
-- MuseTalk -> SadTalker fallback logic.
-- CPU fallback inside subtitle stage.
-- Manual Wav2Lip path present in vendored repo and actual artifacts, despite not being part of documented orchestrator.
-
-7. **Phase 6: Current State Verdict**
-
-1. What is actually working
-- CLI parsing and config loading in [`run_podcast.py`](/Users/pranamyajain/hindi_podcast_local/run_podcast.py).
-- Input audio validation by extension and duration.
-- Logging, stage timing, and JSON report writing.
-- Audio preprocessing to 16 kHz mono WAV.
-- Avatar/background reuse and A1111-based generation if local server exists.
-- Subtitle generation with Faster-Whisper if model files exist.
-- FFmpeg compositing.
-- FFmpeg subtitle burn-in and final MP4 export.
-- Vendored Wav2Lip manual inference path, evidenced by successful outputs in `out/`.
-
-2. What is broken
-- Core lipsync stage on clean repo: missing backend repos at [`podcast_pipeline/lipsync.py#L74-L86`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L74).
-- Claimed ComfyUI option: not implemented at [`podcast_pipeline/avatar.py#L95-L101`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py#L95).
-- Subtitle file naming ignores selected language at [`podcast_pipeline/subtitles.py#L48`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L48).
-- SRT numbering bug at [`podcast_pipeline/subtitles.py#L58-L64`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py#L58).
-- YouTube validation incomplete at [`podcast_pipeline/export.py#L94-L124`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py#L94).
-- Root environment does not satisfy vendored Wav2Lip dependency needs.
-- Wav2Lip audio helper bug at [`models/Wav2Lip/audio.py#L53-L60`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/audio.py#L53).
-- `hparams_debug_string` broken at [`models/Wav2Lip/hparams.py#L98-L100`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/hparams.py#L98).
-- Eval shell wrapper references missing `run_pipeline.py` at [`models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.sh#L6-L7`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/evaluation/scores_LSE/calculate_scores_real_videos.sh#L6).
-
-3. What is missing entirely
-- `models/SadTalker`
-- `models/MuseTalk`
-- local Faster-Whisper model dir
-- local SD checkpoint in repo
-- license manifests for shipped models
-- tests
-- automated benchmark harness
-- integrated Wav2Lip backend inside `run_podcast.py`
-
-4. System readiness score
-- Stage 1 audio preprocess: `2/3`
-- Stage 2 avatar/background: `2/3`
-- Stage 3 lipsync: `1/3`
-- Stage 4 composite: `2/3`
-- Stage 5 subtitles: `2/3`
-- Stage 6 export: `2/3`
-- Overall system score: `1.8/3`
-
-Reason for overall score:
-- Several stages work in isolation.
-- The documented end-to-end path does not run from a clean checkout because the central lipsync dependency is missing.
-
-5. Top 5 critical issues
-1. Missing production lipsync backends
-- Where: [`podcast_pipeline/lipsync.py#L74-L86`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py#L74)
-- Why it matters: the documented pipeline cannot complete.
-- Minimum fix: vendor or submodule-pin `SadTalker` and/or `MuseTalk`, add weight checks, add deterministic integration tests.
-
-2. License non-compliance with stated constraints
-- Where: [`models/Wav2Lip/README.md#L228`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/README.md#L228), [`models/Wav2Lip/README.md#L308`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/README.md#L308)
-- Why it matters: current dependency set does not satisfy permissive open-source-only requirement.
-- Minimum fix: replace Wav2Lip or document and obtain compliant alternative; add explicit model license registry.
-
-3. Environment is not reproducible
-- Where: root [`requirements.txt`](/Users/pranamyajain/hindi_podcast_local/requirements.txt), [`environment.yml`](/Users/pranamyajain/hindi_podcast_local/environment.yml), vendored [`models/Wav2Lip/requirements.txt`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/requirements.txt)
-- Why it matters: fresh setup cannot reach the current working manual path.
-- Minimum fix: choose one supported inference stack, freeze one environment, remove conflicting stacks.
-
-4. Documentation and implementation diverge materially
-- Where: [`README.md`](/Users/pranamyajain/hindi_podcast_local/README.md), [`podcast_pipeline/avatar.py#L95-L101`](/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/avatar.py#L95)
-- Why it matters: users will follow unsupported setup instructions and fail.
-- Minimum fix: rewrite README to match actual executable system.
-
-5. Working path is manual and unintegrated
-- Where: `out/*` artifacts plus vendored [`models/Wav2Lip/inference.py`](/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip/inference.py)
-- Why it matters: the only evidenced successful renders are not reproducible through the official entrypoint.
-- Minimum fix: either integrate Wav2Lip as a supported backend or delete experimental path from product claims.
-
-8. **Phase 7: Technical Debt Register**
-
-Hardcoded paths and machine-specific assumptions:
-- A1111 at `http://127.0.0.1:7860`
-- backend repos under `models/SadTalker` and `models/MuseTalk`
-- whisper model under `models/faster-whisper-medium`
-- fixed output names like `final_1080p.mp4`, `transcript_hi.srt`
-- nested Wav2Lip temp path `temp/result.avi`
-- local-user email inside vendored git logs
-
-Untested code paths:
-- MuseTalk fallback path in clean repo.
-- non-Hindi subtitle file naming path.
-- ComfyUI path is dead because not implemented.
-- evaluation scripts requiring external SyncNet repo.
-- cleanup path with `--keep-intermediates false`.
-
-Synchronous operations that should be async or at least time-bounded:
-- all HTTP calls to A1111
-- all subprocess calls via `run_command`
-- all FFmpeg runs
-- all large model loads
-
-Missing input validation at boundaries:
-- no validation that A1111 is actually serving expected model
-- no validation that backend repos have correct weights
-- no validation that generated avatar resembles requested framing
-- no validation that subtitles match audio language beyond forcing `language=hi`
-
-Missing output validation before downstream handoff:
-- no validation that talking-head output is lip-synced
-- no validation that composited video duration matches audio exactly
-- no validation that subtitle burn-in visually succeeded
-- no validation that final file has `faststart`
-
-Configuration scattered instead of centralized:
-- defaults duplicated in code and YAML
-- manual experiment parameters live only in output logs and ad-hoc files
-- vendored Wav2Lip has its own completely separate config stack
-- model locations partly in docs, partly in code, partly external to repo
-
-**Executive Summary**
-
-This repository is two systems at once.
-
-The first is the intended product: a modular local podcast pipeline in `/Users/pranamyajain/hindi_podcast_local/run_podcast.py` and `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/`. That system is architecturally coherent. Audio preprocessing, subtitle generation, compositing, export, logging, and reporting are implemented. The problem is that the central lipsync stage depends on `SadTalker` and `MuseTalk`, and neither repo exists in this codebase. From a clean checkout, the documented end-to-end pipeline does not run.
-
-The second is the system that actually produced the outputs you were testing: a vendored `Wav2Lip` repo under `/Users/pranamyajain/hindi_podcast_local/models/Wav2Lip`, plus manual experiment folders under `/Users/pranamyajain/hindi_podcast_local/out`. That manual path clearly ran. The logs show CPU Wav2Lip inference, fixed bounding boxes, looped driver videos, FFmpeg muxing, and hand-authored localhost preview pages. That is the real operational history of the project. It is not integrated into the official entrypoint, not documented as the primary path, and not compatible with the repository’s stated license constraints.
-
-The current state is not production-ready. The repo contains useful building blocks, but it is not a reproducible, policy-compliant, single-command system. The largest gaps are not cosmetic. They are structural:
-1. the orchestrated lipsync backend is missing,
-2. the environment is split across incompatible stacks,
-3. the only evidenced working path relies on a non-permissive vendored dependency and manual orchestration.
-
-The three highest-leverage actions to take next are:
-1. Pick one lipsync path and commit to it. Either integrate Wav2Lip as an official backend with a real adapter, or remove it and vendor/pin SadTalker or MuseTalk properly. Do not keep two half-systems.
-2. Rebuild the environment and licensing story from zero. Produce one lockable environment, one model manifest, and one license registry that actually matches the shipped files.
-3. Rewrite the README to describe only what the repo can do from a clean checkout, then add one integration test that proves `run_podcast.py` reaches a final MP4 on a prepared local machine. Without that, every future change will drift the system further from reality.
+## Phase 2: File-by-File Deep Analysis
+
+### `run_podcast.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/run_podcast.py`
+- Size: `7427` bytes
+- Role: entrypoint/orchestrator
+- SHA-256 (first 2MB): `980aa1c1c49f3cf94415f10563003678f9d3bfa7c1eff0b7eb77db34a9b7b472`
+
+**Code analysis**
+- Top-level functions: `4`
+  - `parse_args()` (line 33)
+  - `resolve_path(base, value)` (line 45)
+  - `cleanup(paths)` (line 50)
+  - `main()` (line 56)
+- Top-level classes: `0`
+- Imports (unique): `25`
+  - `__future__.annotations`, `argparse`, `dataclasses.asdict`, `pathlib.Path`, `podcast_pipeline.audio.preprocess_audio`, `podcast_pipeline.composite.composite_video`, `podcast_pipeline.diarize.diarize_audio`, `podcast_pipeline.export.burn_subtitles_and_export`, `podcast_pipeline.lipsync.render_speaker_full_video`, `podcast_pipeline.subtitles.generate_srt`, `podcast_pipeline.transcribe.transcribe_audio`, `podcast_pipeline.utils.PipelineError`, `podcast_pipeline.utils.StageStat`, `podcast_pipeline.utils.StageTimer`, `podcast_pipeline.utils.bool_from_optional_flag`, `podcast_pipeline.utils.ensure_dir`, `podcast_pipeline.utils.load_config`, `podcast_pipeline.utils.probe_audio_duration`, `podcast_pipeline.utils.setup_logger`, `podcast_pipeline.utils.stage_error_boundary`, `podcast_pipeline.utils.write_json`, `shutil`, `sys`, `time`, `typing.List`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import shutil
+import sys
+import time
+from dataclasses import asdict
+from pathlib import Path
+from typing import List
+
+from podcast_pipeline.audio import preprocess_audio
+from podcast_pipeline.composite import composite_video
+from podcast_pipeline.diarize import diarize_audio
+from podcast_pipeline.export import burn_subtitles_and_export
+from podcast_pipeline.lipsync import render_speaker_full_video
+from podcast_pipeline.subtitles import generate_srt
+from podcast_pipeline.transcribe import transcribe_audio
+from podcast_pipeline.utils import (
+    PipelineError,
+    StageStat,
+    StageTimer,
+    bool_from_optional_flag,
+    ensure_dir,
+    load_config,
+    probe_audio_duration,
+    setup_logger,
+    stage_error_boundary,
+    write_json,
+)
+
+
+def parse_args() -> argparse.Namespace:
+    p = argparse.ArgumentParser(description="Two-host local podcast video generator")
+    p.add_argument("--audio", required=True)
+    p.add_argument("--out", required=True)
+    p.add_argument("--config", default="configs/default_config.yaml")
+    p.add_argument("--speaker-a-image", default="")
+    p.add_argument("--speaker-b-image", default="")
+    p.add_argument("--keep-intermediates", nargs="?", const="true", default=None)
+```
+
+### `README.md`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/README.md`
+- Size: `2764` bytes
+- Role: first-party
+- SHA-256 (first 2MB): `3f7089ae6299d9a1360bc25b2573a62c0290d096d84d75efe014c5e0707cef6b`
+
+**Content head (first 80 lines)**
+```text
+# Local Two-Speaker Podcast Video Pipeline (English, Offline)
+
+This pipeline converts one NotebookLM English dialogue audio file into a 1080p podcast video with two real speakers.
+
+## Confirmed architecture
+
+1. Audio preprocess (`FFmpeg`)
+2. Speaker diarization (`pyannote-audio`)
+3. Two independent lip-sync renders (`LatentSync` primary, `VideoRetalking` fallback)
+4. Two-speaker composition (`split_screen` / `cut` / `thumbnail`)
+5. Speaker-labeled subtitles (`Whisper large-v3` via `faster-whisper`)
+6. Final export (`FFmpeg`)
+
+## Entry point
+
+```bash
+python /Users/pranamyajain/hindi_podcast_local/run_podcast.py \
+  --audio /abs/path/notebooklm_dialogue.wav \
+  --out /abs/path/out/episode_001 \
+  --layout split_screen
+```
+
+## Required local assets
+
+- `assets/speaker_a.png` or short clip still frame for speaker A
+- `assets/speaker_b.png` or short clip still frame for speaker B
+- `assets/background_1920x1080.png`
+
+## Models and sources (local-only)
+
+1. **pyannote diarization model**
+   - Place local model files under: `models/pyannote/speaker-diarization-3.1`
+   - Source: Hugging Face `pyannote/speaker-diarization-3.1` (download offline and copy locally)
+
+2. **Whisper large-v3**
+   - Place local model files under: `models/whisper/large-v3`
+   - Source: Hugging Face `openai/whisper-large-v3` (download offline and copy locally)
+
+3. **LatentSync weights**
+   - LatentSync code checkout path: `models/LatentSync`
+   - Pinned commit currently used: `a229c3948406bc2cf6eaf4873e662e70c6a04746`
+   - Source: [https://github.com/bytedance/LatentSync](https://github.com/bytedance/LatentSync)
+   - Download model weights from the LatentSync project release/instructions and place in its expected checkpoint path.
+
+4. **VideoRetalking (fallback)**
+   - Expected path: `models/VideoRetalking`
+   - Source: install Apache-2.0 release only; keep local weights in repo-expected checkpoint paths.
+
+## License declarations for pipeline dependencies
+
+- `pyannote-audio`: MIT
+- `faster-whisper`: MIT
+- `torch`: BSD-3-Clause (permissive, allowed)
+- `ffmpeg-python`: Apache-2.0
+- `Pillow`: HPND-like permissive (PIL Software License)
+- `numpy`: BSD-3-Clause
+- `PyYAML`: MIT
+- `requests`: Apache-2.0
+- `LatentSync`: Apache-2.0
+- `VideoRetalking` (required fallback): Apache-2.0
+
+## Note on submodule requirement
+
+`git submodule add` requires the project root itself to be a git repository.
+Current folder `/Users/pranamyajain/hindi_podcast_local` is not a git repo, so LatentSync was cloned at a pinned commit instead.
+After `git init`, convert it with:
+
+```bash
+cd /Users/pranamyajain/hindi_podcast_local
+git submodule add https://github.com/bytedance/LatentSync.git models/LatentSync
+cd models/LatentSync && git checkout a229c3948406bc2cf6eaf4873e662e70c6a04746
+```
+```
+
+### `requirements.txt`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/requirements.txt`
+- Size: `132` bytes
+- Role: python dependency manifest
+- SHA-256 (first 2MB): `9bd7ff12d7a84967ed2e8ca02acec6f18d2df18f7f229b5b794fa9401bd53e74`
+
+**Content head (first 80 lines)**
+```text
+faster-whisper==1.0.3
+torch>=2.1.0
+torchaudio>=2.1.0
+numpy>=1.26.0
+PyYAML>=6.0
+requests>=2.31.0
+Pillow>=10.0.0
+ffmpeg-python>=0.2.0
+```
+
+### `environment.yml`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/environment.yml`
+- Size: `205` bytes
+- Role: configuration
+- SHA-256 (first 2MB): `88d17c161aa092962b9d4a1aa200c6bb151739ec98effab6289d45764c61aaad`
+
+**Content head (first 80 lines)**
+```text
+name: hindi-podcast-local
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - ffmpeg=6.1
+  - pytorch=2.4.*
+  - pytorch-cuda=12.1
+  - pip
+  - pip:
+      - -r requirements.txt
+```
+
+### `configs/default_config.yaml`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/configs/default_config.yaml`
+- Size: `1139` bytes
+- Role: configuration
+- SHA-256 (first 2MB): `93fefef8b06e0d2bd059a6bc623206266316d7b7ca70fe6fa5dc1c1ef5294fe8`
+
+**Content head (first 80 lines)**
+```text
+project:
+  name: english-two-speaker-podcast
+  seed: 124578
+
+paths:
+  assets_dir: assets
+  models_dir: models
+  work_dir: out
+
+audio:
+  target_sample_rate: 16000
+  target_channels: 1
+  loudnorm: "I=-16:TP=-1.5:LRA=11"
+  denoise: false
+  denoise_nf: -25
+  min_duration_sec: 60
+  max_duration_sec: 300
+
+speakers:
+  a:
+    source_image: "assets/speaker_a.jpg"
+    idle_video: "assets/speaker_a_looped.mp4"
+    input_video: "/Users/pranamyajain/Downloads/male podcast studio.mp4"
+  b:
+    source_image: "assets/speaker_b.jpg"
+    idle_video: "assets/speaker_b_looped.mp4"
+    input_video: "/Users/pranamyajain/Downloads/female podcast studio.mp4"
+
+transcription:
+  model_name: "large-v3"
+  language: "en"
+  word_timestamps: true
+
+diarize:
+  speaker_change_gap_sec: 0.8
+
+lipsync:
+  backend: "sadtalker"
+  repo_path: "models/SadTalker"
+
+subtitles:
+  model_name: "large-v3"
+  device: "cpu"
+  compute_type: "int8"
+  language: "en"
+  beam_size: 5
+  vad_filter: true
+  output_srt: "transcript_en.srt"
+
+export:
+  width: 1280
+  height: 720
+  fps: 25
+  crf: 18
+  audio_bitrate: "192k"
+  audio_sample_rate: 48000
+  preset: "medium"
+  pix_fmt: "yuv420p"
+```
+
+### `podcast_pipeline/__init__.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/__init__.py`
+- Size: `201` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `7a67062e869f50100daaf7fba1d56c67becfe3c17d8d95ac7f66e55e84b7eb78`
+
+**Code analysis**
+- Top-level functions: `0`
+- Top-level classes: `0`
+- Imports (unique): `0`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+"""Local two-speaker English podcast video pipeline package."""
+
+__all__ = [
+    "audio",
+    "transcribe",
+    "diarize",
+    "lipsync",
+    "composite",
+    "subtitles",
+    "export",
+    "utils",
+]
+```
+
+### `podcast_pipeline/audio.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/audio.py`
+- Size: `1683` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `0c2b7c0b4987b4cbed2551071137407aea534171f0e3fd3c0b672cf483ea63a3`
+
+**Code analysis**
+- Top-level functions: `1`
+  - `preprocess_audio(input_audio, stage_dir, config, logger)` (line 10)
+- Top-level classes: `0`
+- Imports (unique): `9`
+  - `__future__.annotations`, `logging`, `pathlib.Path`, `typing.Any`, `typing.Dict`, `utils.PipelineError`, `utils.ensure_binary`, `utils.ensure_dir`, `utils.run_command`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `3`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+from typing import Any, Dict
+
+from .utils import PipelineError, ensure_binary, ensure_dir, run_command
+
+
+def preprocess_audio(
+    input_audio: Path,
+    stage_dir: Path,
+    config: Dict[str, Any],
+    logger: logging.Logger,
+) -> Path:
+    ensure_binary("ffmpeg")
+    ensure_dir(stage_dir)
+
+    audio_cfg = config["audio"]
+    target_sr = int(audio_cfg["target_sample_rate"])
+    target_ch = int(audio_cfg["target_channels"])
+    loudnorm = str(audio_cfg["loudnorm"])
+
+    normalized_wav = stage_dir / "preprocessed.wav"
+    denoised_wav = stage_dir / "preprocessed_denoised.wav"
+
+    # highpass at 20Hz removes most DC components in practice.
+    audio_filter = f"highpass=f=20,loudnorm={loudnorm}"
+    cmd = [
+        "ffmpeg",
+        "-y",
+        "-i",
+        str(input_audio),
+        "-af",
+        audio_filter,
+        "-ar",
+        str(target_sr),
+        "-ac",
+        str(target_ch),
+        str(normalized_wav),
+```
+
+### `podcast_pipeline/transcribe.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/transcribe.py`
+- Size: `2920` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `a51849a3f0003975a469fd30a8aa39f41799ead5c69c949a914e9e2f05174c75`
+
+**Code analysis**
+- Top-level functions: `1`
+  - `transcribe_audio(audio_wav, stage_dir, config, logger)` (line 11)
+- Top-level classes: `0`
+- Imports (unique): `12`
+  - `__future__.annotations`, `faster_whisper.WhisperModel`, `json`, `logging`, `pathlib.Path`, `typing.Any`, `typing.Dict`, `typing.Iterable`, `typing.List`, `typing.Tuple`, `utils.PipelineError`, `utils.ensure_dir`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import json
+import logging
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Tuple
+
+from .utils import PipelineError, ensure_dir
+
+
+def transcribe_audio(
+    audio_wav: Path,
+    stage_dir: Path,
+    config: Dict[str, Any],
+    logger: logging.Logger,
+) -> Tuple[Path, Path]:
+    ensure_dir(stage_dir)
+    try:
+        from faster_whisper import WhisperModel  # MIT
+    except Exception as exc:
+        raise PipelineError("faster-whisper is not installed") from exc
+
+    sub_cfg = config.get("subtitles", {})
+    model_name = str(sub_cfg.get("model_name", "large-v3"))
+    device = str(sub_cfg.get("device", "cpu"))
+    compute_type = str(sub_cfg.get("compute_type", "int8"))
+    beam_size = int(sub_cfg.get("beam_size", 5))
+    vad_filter = bool(sub_cfg.get("vad_filter", True))
+
+    logger.info(
+        "Transcribing with faster-whisper model=%s device=%s compute_type=%s",
+        model_name,
+        device,
+        compute_type,
+    )
+    model = WhisperModel(model_name, device=device, compute_type=compute_type)
+    segments, info = model.transcribe(
+        str(audio_wav),
+        language="en",
+        task="transcribe",
+```
+
+### `podcast_pipeline/diarize.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/diarize.py`
+- Size: `4158` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `0ff1fc048474db5daef72fd15a3346a1b12c61bac4337428cf267b394984cf8a`
+
+**Code analysis**
+- Top-level functions: `5`
+  - `diarize_audio(transcript_words_json, audio_wav, stage_dir, config, logger)` (line 11)
+  - `_build_turn_segments(words, max_gap)` (line 53)
+  - `_segments_for(segments, speaker)` (line 82)
+  - `_volume_expr(segments)` (line 94)
+  - `_render_speaker_masked_wav(input_wav, output_wav, active_segments, logger)` (line 100)
+- Top-level classes: `0`
+- Imports (unique): `14`
+  - `__future__.annotations`, `json`, `logging`, `pathlib.Path`, `typing.Any`, `typing.Dict`, `typing.List`, `typing.Sequence`, `typing.Tuple`, `utils.PipelineError`, `utils.ensure_binary`, `utils.ensure_dir`, `utils.probe_audio_duration`, `utils.run_command`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `2`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import json
+import logging
+from pathlib import Path
+from typing import Any, Dict, List, Sequence, Tuple
+
+from .utils import PipelineError, ensure_binary, ensure_dir, probe_audio_duration, run_command
+
+
+def diarize_audio(
+    transcript_words_json: Path,
+    audio_wav: Path,
+    stage_dir: Path,
+    config: Dict[str, Any],
+    logger: logging.Logger,
+) -> Tuple[Path, Path, Path]:
+    ensure_binary("ffmpeg")
+    ensure_dir(stage_dir)
+
+    if not transcript_words_json.exists():
+        raise PipelineError(f"Transcript words JSON missing: {transcript_words_json}")
+    words = json.loads(transcript_words_json.read_text(encoding="utf-8"))
+    if not isinstance(words, list) or not words:
+        raise PipelineError("Transcript words JSON is empty/invalid")
+
+    gap = float(config.get("diarize", {}).get("speaker_change_gap_sec", 0.8))
+    segments = _build_turn_segments(words, max_gap=gap)
+
+    diarization_json = stage_dir / "diarization.json"
+    diarization_json.write_text(json.dumps(segments, indent=2), encoding="utf-8")
+
+    speaker_a_wav = stage_dir / "speaker_a.wav"
+    speaker_b_wav = stage_dir / "speaker_b.wav"
+    _render_speaker_masked_wav(audio_wav, speaker_a_wav, _segments_for(segments, "HOST_A"), logger)
+    _render_speaker_masked_wav(audio_wav, speaker_b_wav, _segments_for(segments, "HOST_B"), logger)
+
+    for p in (diarization_json, speaker_a_wav, speaker_b_wav):
+        if not p.exists() or p.stat().st_size <= 0:
+            raise PipelineError(f"Diarization stage output missing/empty: {p}")
+```
+
+### `podcast_pipeline/lipsync.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/lipsync.py`
+- Size: `7477` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `866480449d9810019359ecc6d3b8915ccf9be623f2079e419e9daa3eaaa84084`
+
+**Code analysis**
+- Top-level functions: `6`
+  - `render_speaker_full_video(speaker_label, source_image, speaker_padded_wav, original_full_wav, diarization_json, idle_clip_mp4, output_dir, config, fps, logger)` (line 11)
+  - `_render_speech_segment_sadtalker(source_image, speaker_padded_wav, start, duration, out_path, tmp_dir, config, fps, logger)` (line 106)
+  - `_render_idle_segment(idle_clip, duration, fps, out_path, logger)` (line 190)
+  - `_build_timeline(segments, speaker_label, full_duration)` (line 214)
+  - `_find_latest_mp4(path)` (line 237)
+  - `_validate_duration(video_path, reference_audio)` (line 244)
+- Top-level classes: `0`
+- Imports (unique): `13`
+  - `__future__.annotations`, `json`, `logging`, `pathlib.Path`, `typing.Any`, `typing.Dict`, `typing.List`, `typing.Tuple`, `utils.PipelineError`, `utils.ensure_binary`, `utils.ensure_dir`, `utils.probe_audio_duration`, `utils.run_command`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `5`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import json
+import logging
+from pathlib import Path
+from typing import Any, Dict, List, Tuple
+
+from .utils import PipelineError, ensure_binary, ensure_dir, probe_audio_duration, run_command
+
+
+def render_speaker_full_video(
+    speaker_label: str,
+    source_image: Path,
+    speaker_padded_wav: Path,
+    original_full_wav: Path,
+    diarization_json: Path,
+    idle_clip_mp4: Path,
+    output_dir: Path,
+    config: Dict[str, Any],
+    fps: int,
+    logger: logging.Logger,
+) -> Path:
+    ensure_binary("ffmpeg")
+    ensure_dir(output_dir)
+
+    if speaker_label not in {"HOST_A", "HOST_B"}:
+        raise PipelineError(f"Invalid speaker label: {speaker_label}")
+    for p in (source_image, speaker_padded_wav, original_full_wav, diarization_json, idle_clip_mp4):
+        if not p.exists():
+            raise PipelineError(f"Lipsync input missing: {p}")
+
+    timeline = _build_timeline(
+        segments=json.loads(diarization_json.read_text(encoding="utf-8")),
+        speaker_label=speaker_label,
+        full_duration=probe_audio_duration(original_full_wav),
+    )
+    if not timeline:
+        raise PipelineError(f"No timeline segments built for {speaker_label}")
+
+    tmp_dir = ensure_dir(output_dir / f"tmp_{speaker_label.lower()}")
+```
+
+### `podcast_pipeline/composite.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/composite.py`
+- Size: `1857` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `1ca863d47aad1f21b271bae186f748884d11296a8b2b3f65c27416cd2e899d9b`
+
+**Code analysis**
+- Top-level functions: `1`
+  - `composite_video(host_a_video, host_b_video, full_audio_wav, stage_dir, logger)` (line 9)
+- Top-level classes: `0`
+- Imports (unique): `8`
+  - `__future__.annotations`, `logging`, `pathlib.Path`, `utils.PipelineError`, `utils.ensure_binary`, `utils.ensure_dir`, `utils.probe_audio_duration`, `utils.run_command`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `2`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+
+from .utils import PipelineError, ensure_binary, ensure_dir, probe_audio_duration, run_command
+
+
+def composite_video(
+    host_a_video: Path,
+    host_b_video: Path,
+    full_audio_wav: Path,
+    stage_dir: Path,
+    logger: logging.Logger,
+) -> Path:
+    ensure_binary("ffmpeg")
+    ensure_dir(stage_dir)
+
+    for p in (host_a_video, host_b_video, full_audio_wav):
+        if not p.exists():
+            raise PipelineError(f"Composite input missing: {p}")
+
+    out_path = stage_dir / "composited.mp4"
+    target_duration = probe_audio_duration(full_audio_wav)
+    filter_complex = (
+        "[0:v]scale=640:720:force_original_aspect_ratio=decrease,"
+        "pad=640:720:(ow-iw)/2:(oh-ih)/2,setsar=1[left];"
+        "[1:v]scale=640:720:force_original_aspect_ratio=decrease,"
+        "pad=640:720:(ow-iw)/2:(oh-ih)/2,setsar=1[right];"
+        "[left][right]hstack=inputs=2[v]"
+    )
+
+    # HOST_B on left, HOST_A on right
+    run_command(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(host_b_video),
+            "-i",
+```
+
+### `podcast_pipeline/subtitles.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/subtitles.py`
+- Size: `2533` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `dbcb9eb301d53fbe9e821cd357b3c1d6f96fd08817f5749857953d65724baaf3`
+
+**Code analysis**
+- Top-level functions: `3`
+  - `generate_srt(transcript_segments_json, diarization_json, stage_dir, logger)` (line 11)
+  - `_speaker_for_segment(start, end, diar, tolerance)` (line 54)
+  - `_fmt(seconds)` (line 71)
+- Top-level classes: `0`
+- Imports (unique): `10`
+  - `__future__.annotations`, `json`, `logging`, `pathlib.Path`, `typing.Any`, `typing.Dict`, `typing.List`, `typing.Sequence`, `utils.PipelineError`, `utils.ensure_dir`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import json
+import logging
+from pathlib import Path
+from typing import Any, Dict, List, Sequence
+
+from .utils import PipelineError, ensure_dir
+
+
+def generate_srt(
+    transcript_segments_json: Path,
+    diarization_json: Path,
+    stage_dir: Path,
+    logger: logging.Logger,
+) -> Path:
+    ensure_dir(stage_dir)
+    if not transcript_segments_json.exists():
+        raise PipelineError(f"Transcript segments JSON missing: {transcript_segments_json}")
+    if not diarization_json.exists():
+        raise PipelineError(f"Diarization JSON missing: {diarization_json}")
+
+    segments = json.loads(transcript_segments_json.read_text(encoding="utf-8"))
+    diar = json.loads(diarization_json.read_text(encoding="utf-8"))
+    if not isinstance(segments, list) or not segments:
+        raise PipelineError("Transcript segments are empty")
+
+    tolerance = 0.2
+    lines: List[str] = []
+    idx = 1
+    for seg in segments:
+        s = float(seg.get("start", 0.0))
+        e = float(seg.get("end", 0.0))
+        txt = str(seg.get("text", "")).strip()
+        if not txt or e <= s:
+            continue
+        speaker = _speaker_for_segment(s, e, diar, tolerance)
+        label = "[HOST A]" if speaker == "HOST_A" else "[HOST B]"
+        lines.append(str(idx))
+        lines.append(f"{_fmt(s)} --> {_fmt(e)}")
+```
+
+### `podcast_pipeline/export.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/export.py`
+- Size: `2481` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `57717c6a2a45e49fb7e8991ead75cc0f7ebeb0144d02fd5c8816f25cc1bbbe5d`
+
+**Code analysis**
+- Top-level functions: `3`
+  - `burn_subtitles_and_export(composited_video, subtitles_srt, output_path, logger)` (line 9)
+  - `validate_final_video(video_path)` (line 52)
+  - `_escape_filter_path(path)` (line 67)
+- Top-level classes: `0`
+- Imports (unique): `7`
+  - `__future__.annotations`, `logging`, `pathlib.Path`, `utils.PipelineError`, `utils.ensure_binary`, `utils.ffprobe_streams`, `utils.run_command`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `2`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+
+from .utils import PipelineError, ensure_binary, ffprobe_streams, run_command
+
+
+def burn_subtitles_and_export(
+    composited_video: Path,
+    subtitles_srt: Path,
+    output_path: Path,
+    logger: logging.Logger,
+) -> Path:
+    ensure_binary("ffmpeg")
+    if not composited_video.exists():
+        raise PipelineError(f"Composited video missing: {composited_video}")
+    if not subtitles_srt.exists():
+        raise PipelineError(f"SRT file missing: {subtitles_srt}")
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    subtitle_filter = (
+        f"subtitles={_escape_filter_path(subtitles_srt)}:"
+        "force_style='FontSize=18,PrimaryColour=&Hffffff,OutlineColour=&H000000,Outline=1,Alignment=2'"
+    )
+    run_command(
+        [
+            "ffmpeg",
+            "-y",
+            "-i",
+            str(composited_video),
+            "-vf",
+            subtitle_filter,
+            "-c:v",
+            "libx264",
+            "-c:a",
+            "copy",
+            "-movflags",
+            "+faststart",
+            str(output_path),
+```
+
+### `podcast_pipeline/utils.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/podcast_pipeline/utils.py`
+- Size: `8852` bytes
+- Role: pipeline module
+- SHA-256 (first 2MB): `453653a75d133618ee9bb8ab23f646ec9c7149cd58d1ff3b87eb83fdf5adecca`
+
+**Code analysis**
+- Top-level functions: `12`
+  - `deep_merge(base, update)` (line 131)
+  - `load_config(config_path)` (line 141)
+  - `setup_logger(log_path, verbose)` (line 149)
+  - `ensure_dir(path)` (line 170)
+  - `ensure_binary(binary_name)` (line 175)
+  - `run_command(command, logger, cwd, env, timeout_sec)` (line 180)
+  - `ffprobe_streams(path)` (line 212)
+  - `probe_audio_duration(path)` (line 235)
+  - `detect_gpu_vram_gb(logger)` (line 244)
+  - `bool_from_optional_flag(value, default)` (line 280)
+  - `write_json(path, payload)` (line 291)
+  - `stage_error_boundary(stage_name, logger)` (line 297)
+- Top-level classes: `3`
+  - `StageStat` (line 92)
+  - `PipelineError` (line 100)
+  - `StageTimer` (line 104)
+- Imports (unique): `17`
+  - `__future__.annotations`, `contextlib.contextmanager`, `copy`, `dataclasses.dataclass`, `json`, `logging`, `pathlib.Path`, `shutil`, `subprocess`, `time`, `torch`, `typing.Any`, `typing.Dict`, `typing.Iterable`, `typing.List`, `typing.Optional`, `yaml`
+- subprocess usage refs: `3`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+from __future__ import annotations
+
+import copy
+import json
+import logging
+import shutil
+import subprocess
+import time
+from contextlib import contextmanager
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional
+
+import yaml
+
+
+DEFAULT_CONFIG: Dict[str, Any] = {
+    "project": {
+        "name": "english-two-speaker-podcast",
+        "seed": 124578,
+    },
+    "paths": {
+        "assets_dir": "assets",
+        "models_dir": "models",
+        "work_dir": "out",
+    },
+    "audio": {
+        "target_sample_rate": 16000,
+        "target_channels": 1,
+        "loudnorm": "I=-16:TP=-1.5:LRA=11",
+        "denoise": False,
+        "denoise_nf": -25,
+        "max_duration_sec": 1800,
+    },
+    "diarize": {
+        "model": "base",
+        "min_segment_duration": 0.5,
+        "speaker_change_gap_sec": 0.8,
+    },
+    "speakers": {
+```
+
+### `scripts/prep_assets.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/scripts/prep_assets.py`
+- Size: `5478` bytes
+- Role: utility script
+- SHA-256 (first 2MB): `92a069663856a3bb18f7efa2c25eb0601498b1044f53521cd72803b3775aebca`
+
+**Code analysis**
+- Top-level functions: `8`
+  - `parse_args()` (line 17)
+  - `run_cmd(cmd, timeout_sec)` (line 25)
+  - `ffprobe_info(path)` (line 39)
+  - `probe_resolution_duration(path)` (line 59)
+  - `ensure_nonzero(path)` (line 79)
+  - `process_speaker(input_video, still_out, looped_out, duration)` (line 86)
+  - `format_size(path)` (line 142)
+  - `main()` (line 146)
+- Top-level classes: `0`
+- Imports (unique): `9`
+  - `__future__.annotations`, `argparse`, `json`, `pathlib.Path`, `podcast_pipeline.utils.PipelineError`, `subprocess`, `sys`, `typing.Dict`, `typing.Tuple`
+- subprocess usage refs: `1`
+- ffmpeg string refs: `2`
+
+**Content head (first 40 lines)**
+```text
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from pathlib import Path
+from typing import Dict, Tuple
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from podcast_pipeline.utils import PipelineError  # noqa: E402
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Prepare speaker assets from Veo videos")
+    parser.add_argument("--speaker-a", required=True, help="Path to speaker A video")
+    parser.add_argument("--speaker-b", required=True, help="Path to speaker B video")
+    parser.add_argument("--duration", required=True, type=int, help="Looped duration in seconds")
+    return parser.parse_args()
+
+
+def run_cmd(cmd: list[str], timeout_sec: int) -> str:
+    proc = subprocess.run(
+        cmd,
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        timeout=timeout_sec,
+    )
+    if proc.returncode != 0:
+        raise PipelineError(f"Command failed ({proc.returncode}): {' '.join(cmd)}\n{proc.stdout}")
+    return proc.stdout
+
+
+def ffprobe_info(path: Path) -> Dict[str, object]:
+    out = run_cmd(
+```
+
+### `scripts/self_check.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/scripts/self_check.py`
+- Size: `3420` bytes
+- Role: utility script
+- SHA-256 (first 2MB): `64c56dc729f869aaaa43d47921b8bb3c0cd5da97bdfc18daaf48ddd0b76cc286`
+
+**Code analysis**
+- Top-level functions: `4`
+  - `_ffprobe_readable(path)` (line 11)
+  - `_exists_nonzero(path)` (line 38)
+  - `_print_check(name, ok, reason)` (line 47)
+  - `main()` (line 52)
+- Top-level classes: `0`
+- Imports (unique): `5`
+  - `__future__.annotations`, `faster_whisper`, `pathlib.Path`, `subprocess`, `sys`
+- subprocess usage refs: `1`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def _ffprobe_readable(path: Path) -> tuple[bool, str]:
+    try:
+        proc = subprocess.run(
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "default=noprint_wrappers=1:nokey=1",
+                str(path),
+            ],
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            timeout=30,
+        )
+    except Exception as exc:
+        return False, f"ffprobe exception: {exc}"
+    if proc.returncode != 0:
+        return False, f"ffprobe failed: {proc.stdout.strip()}"
+    out = proc.stdout.strip()
+    return True, f"readable (duration={out}s)"
+
+
+def _exists_nonzero(path: Path) -> tuple[bool, str]:
+    if not path.exists():
+        return False, "missing"
+```
+
+### `scripts/lipsync_sync_api.py`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/scripts/lipsync_sync_api.py`
+- Size: `940` bytes
+- Role: utility script
+- SHA-256 (first 2MB): `2bd501c9291b3ff1af9899472d68b69a1a88d669e40f7864cc109fe481e0d9ce`
+
+**Code analysis**
+- Top-level functions: `1`
+  - `upload(path)` (line 15)
+- Top-level classes: `0`
+- Imports (unique): `4`
+  - `os`, `requests`, `sys`, `time`
+- subprocess usage refs: `0`
+- ffmpeg string refs: `0`
+
+**Content head (first 40 lines)**
+```text
+#!/usr/bin/env python3
+import os, sys, time, requests
+
+API_KEY = os.environ["SYNC_API_KEY"]
+AUDIO = sys.argv[1]
+VIDEO = sys.argv[2]
+OUTPUT = sys.argv[3]
+
+BASE = "https://api.sync.so/v1"
+headers = {"x-api-key": API_KEY, "Content-Type": "application/json"}
+
+# Step A: Submit generation job using public URLs
+# Since we have local files we must upload them first
+# Use the correct upload endpoint
+def upload(path):
+    with open(path, "rb") as f:
+        r = requests.post(
+            f"{BASE}/assets",
+            headers={"x-api-key": API_KEY},
+            files={"file": (os.path.basename(path), f)}
+        )
+    print(f"Upload {path}: {r.status_code} {r.text[:200]}")
+    r.raise_for_status()
+    return r.json()
+
+
+audio_asset = upload(AUDIO)
+video_asset = upload(VIDEO)
+
+print("Audio asset:", audio_asset)
+print("Video asset:", video_asset)
+
+# Stop here and paste output so we can see
+# the actual asset URL structure before proceeding
+```
+
+### `scripts/setup_env.sh`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/scripts/setup_env.sh`
+- Size: `632` bytes
+- Role: utility script
+- SHA-256 (first 2MB): `616560a929850c7bb524b18fbc7172f39ff797abed83f70db015955fc98bb587`
+
+**Content head (first 80 lines)**
+```text
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+python3 -m venv .venv
+source .venv/bin/activate
+
+python3 -m pip install --upgrade pip wheel setuptools
+python3 -m pip install -r requirements.txt
+
+echo
+echo "Environment installed."
+echo "Next steps:"
+echo "1) Ensure ffmpeg/ffprobe are installed and in PATH."
+echo "2) Ensure faster-whisper model cache is available locally."
+echo "3) Ensure local backend repos:"
+echo "   - models/LatentSync (pinned commit)"
+echo "   - models/VideoRetalking (Apache-2.0 build)"
+echo "4) Place speaker/background assets in assets/."
+```
+
+### `assets/README.md`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/assets/README.md`
+- Size: `149` bytes
+- Role: asset/media
+- SHA-256 (first 2MB): `5f5d6a194e4777134fe2359230bd15f5f3ed78c18f2e2acaa0d800a754336af0`
+
+**Content head (first 80 lines)**
+```text
+Generated/cached assets:
+- avatar.png (>=512x512)
+- background_1920x1080.png
+
+These are reused across episodes unless regeneration flags are passed.
+```
+
+### `assets/speaker_a.jpg`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/assets/speaker_a.jpg`
+- Size: `126094` bytes
+- Role: asset/media
+- SHA-256 (first 2MB): `53b9943c014187ad8e8e579851d77cf26fb74fa155073a37e952ab08caade54f`
+
+**Image metadata (`sips`)**
+- Dimensions: `1280x720`
+
+### `assets/speaker_b.jpg`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/assets/speaker_b.jpg`
+- Size: `136284` bytes
+- Role: asset/media
+- SHA-256 (first 2MB): `478d4032cf570dca8d6e2282e4147fd11417ba6278d51d2b9531a0730876db8a`
+
+**Image metadata (`sips`)**
+- Dimensions: `1280x720`
+
+### `assets/speaker_a_looped.mp4`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/assets/speaker_a_looped.mp4`
+- Size: `21080762` bytes
+- Role: asset/media
+- SHA-256 (first 2MB): `34801e2c8a03a7e7f65f9bcdf33605f2ab02d2d8911bd7ef64e44fa61569b8a8`
+
+**Media metadata (`ffprobe`)**
+```json
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "width": 1280,
+      "height": 720,
+      "coded_width": 1280,
+      "coded_height": 720,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 31,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "refs": 1,
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/12800",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 1920000,
+      "duration": "150.000000",
+      "bit_rate": "1115900",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "3750",
+      "extradata_size": 46,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "vendor_id": "[0][0][0][0]",
+        "encoder": "Lavc62.11.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/48000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 7200000,
+      "duration": "150.000000",
+      "bit_rate": "2275",
+      "nb_frames": "7033",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler",
+        "vendor_id": "[0][0][0][0]"
+      }
+    }
+  ],
+  "format": {
+    "filename": "/Users/pranamyajain/hindi_podcast_local/assets/speaker_a_looped.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "150.000000",
+    "size": "21080762",
+    "bit_rate": "1124307",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "encoder": "Lavf62.3.100"
+    }
+  }
+}
+```
+
+### `assets/speaker_b_looped.mp4`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/assets/speaker_b_looped.mp4`
+- Size: `30693547` bytes
+- Role: asset/media
+- SHA-256 (first 2MB): `5d6af83617d8dc087b89eff5a2d527bbbd73e97d69536549b7d509a68ed8ee5f`
+
+**Media metadata (`ffprobe`)**
+```json
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "width": 1280,
+      "height": 720,
+      "coded_width": 1280,
+      "coded_height": 720,
+      "has_b_frames": 2,
+      "pix_fmt": "yuv420p",
+      "level": 31,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "refs": 1,
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/12800",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 1920000,
+      "duration": "150.000000",
+      "bit_rate": "1628564",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "3750",
+      "extradata_size": 46,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "vendor_id": "[0][0][0][0]",
+        "encoder": "Lavc62.11.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": "48000",
+      "channels": 2,
+      "channel_layout": "stereo",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/48000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 7200000,
+      "duration": "150.000000",
+      "bit_rate": "2275",
+      "nb_frames": "7033",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler",
+        "vendor_id": "[0][0][0][0]"
+      }
+    }
+  ],
+  "format": {
+    "filename": "/Users/pranamyajain/hindi_podcast_local/assets/speaker_b_looped.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "150.000000",
+    "size": "30693547",
+    "bit_rate": "1636989",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "encoder": "Lavf62.3.100"
+    }
+  }
+}
+```
+
+### `out/episode_002_preview/final_720p_preview.mp4`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/out/episode_002_preview/final_720p_preview.mp4`
+- Size: `13686097` bytes
+- Role: generated artifact
+- SHA-256 (first 2MB): `afcbe0b490eead1c4ccff9f61ae29cabbf267e96999088dbde55460798756f52`
+
+**Media metadata (`ffprobe`)**
+```json
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "width": 1280,
+      "height": 720,
+      "coded_width": 1280,
+      "coded_height": 720,
+      "has_b_frames": 2,
+      "sample_aspect_ratio": "1:1",
+      "display_aspect_ratio": "16:9",
+      "pix_fmt": "yuv420p",
+      "level": 31,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "refs": 1,
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/12800",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 1739264,
+      "duration": "135.880000",
+      "bit_rate": "724736",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "3397",
+      "extradata_size": 47,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "vendor_id": "[0][0][0][0]",
+        "encoder": "Lavc62.11.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": "16000",
+      "channels": 1,
+      "channel_layout": "mono",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/16000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 2146224,
+      "duration": "134.139000",
+      "bit_rate": "76846",
+      "nb_frames": "2097",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler",
+        "vendor_id": "[0][0][0][0]"
+      }
+    }
+  ],
+  "format": {
+    "filename": "/Users/pranamyajain/hindi_podcast_local/out/episode_002_preview/final_720p_preview.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "135.880000",
+    "size": "13686097",
+    "bit_rate": "805775",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "encoder": "Lavf62.3.100"
+    }
+  }
+}
+```
+
+### `out/episode_001_preview/final_1080p.mp4`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/final_1080p.mp4`
+- Size: `27890408` bytes
+- Role: generated artifact
+- SHA-256 (first 2MB): `dd8f257a3f5111cde2d21368512f493f5848c4dafe1b0403ad0dcc76cad72dc0`
+
+**Media metadata (`ffprobe`)**
+```json
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "has_b_frames": 2,
+      "sample_aspect_ratio": "1:1",
+      "display_aspect_ratio": "16:9",
+      "pix_fmt": "yuv420p",
+      "level": 40,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "refs": 1,
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/12800",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 1920000,
+      "duration": "150.000000",
+      "bit_rate": "1413518",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "3750",
+      "extradata_size": 48,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "vendor_id": "[0][0][0][0]",
+        "encoder": "Lavc62.11.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": "16000",
+      "channels": 1,
+      "channel_layout": "mono",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/16000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 2400000,
+      "duration": "150.000000",
+      "bit_rate": "68766",
+      "nb_frames": "2345",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler",
+        "vendor_id": "[0][0][0][0]"
+      }
+    }
+  ],
+  "format": {
+    "filename": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/final_1080p.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "150.000000",
+    "size": "27890408",
+    "bit_rate": "1487488",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "encoder": "Lavf62.3.100"
+    }
+  }
+}
+```
+
+### `out/episode_001_preview/final_1080p_v2.mp4`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/final_1080p_v2.mp4`
+- Size: `25598366` bytes
+- Role: generated artifact
+- SHA-256 (first 2MB): `9b55152132fce59970287f07e1f227412ae0da072a33b1253034cf20565748da`
+
+**Media metadata (`ffprobe`)**
+```json
+{
+  "streams": [
+    {
+      "index": 0,
+      "codec_name": "h264",
+      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+      "profile": "High",
+      "codec_type": "video",
+      "codec_tag_string": "avc1",
+      "codec_tag": "0x31637661",
+      "width": 1920,
+      "height": 1080,
+      "coded_width": 1920,
+      "coded_height": 1080,
+      "has_b_frames": 2,
+      "sample_aspect_ratio": "1:1",
+      "display_aspect_ratio": "16:9",
+      "pix_fmt": "yuv420p",
+      "level": 40,
+      "chroma_location": "left",
+      "field_order": "progressive",
+      "refs": 1,
+      "is_avc": "true",
+      "nal_length_size": "4",
+      "id": "0x1",
+      "r_frame_rate": "25/1",
+      "avg_frame_rate": "25/1",
+      "time_base": "1/12800",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 1745408,
+      "duration": "136.360000",
+      "bit_rate": "1421040",
+      "bits_per_raw_sample": "8",
+      "nb_frames": "3409",
+      "extradata_size": 48,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "VideoHandler",
+        "vendor_id": "[0][0][0][0]",
+        "encoder": "Lavc62.11.100 libx264"
+      }
+    },
+    {
+      "index": 1,
+      "codec_name": "aac",
+      "codec_long_name": "AAC (Advanced Audio Coding)",
+      "profile": "LC",
+      "codec_type": "audio",
+      "codec_tag_string": "mp4a",
+      "codec_tag": "0x6134706d",
+      "sample_fmt": "fltp",
+      "sample_rate": "16000",
+      "channels": 1,
+      "channel_layout": "mono",
+      "bits_per_sample": 0,
+      "initial_padding": 0,
+      "id": "0x2",
+      "r_frame_rate": "0/0",
+      "avg_frame_rate": "0/0",
+      "time_base": "1/16000",
+      "start_pts": 0,
+      "start_time": "0.000000",
+      "duration_ts": 2146224,
+      "duration": "134.139000",
+      "bit_rate": "76846",
+      "nb_frames": "2097",
+      "extradata_size": 5,
+      "disposition": {
+        "default": 1,
+        "dub": 0,
+        "original": 0,
+        "comment": 0,
+        "lyrics": 0,
+        "karaoke": 0,
+        "forced": 0,
+        "hearing_impaired": 0,
+        "visual_impaired": 0,
+        "clean_effects": 0,
+        "attached_pic": 0,
+        "timed_thumbnails": 0,
+        "non_diegetic": 0,
+        "captions": 0,
+        "descriptions": 0,
+        "metadata": 0,
+        "dependent": 0,
+        "still_image": 0,
+        "multilayer": 0
+      },
+      "tags": {
+        "language": "und",
+        "handler_name": "SoundHandler",
+        "vendor_id": "[0][0][0][0]"
+      }
+    }
+  ],
+  "format": {
+    "filename": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/final_1080p_v2.mp4",
+    "nb_streams": 2,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+    "format_long_name": "QuickTime / MOV",
+    "start_time": "0.000000",
+    "duration": "136.360000",
+    "size": "25598366",
+    "bit_rate": "1501810",
+    "probe_score": 100,
+    "tags": {
+      "major_brand": "isom",
+      "minor_version": "512",
+      "compatible_brands": "isomiso2avc1mp41",
+      "encoder": "Lavf62.3.100"
+    }
+  }
+}
+```
+
+### `out/episode_001_preview/run_report.json`
+
+**File metadata**
+- Path: `/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/run_report.json`
+- Size: `1640` bytes
+- Role: generated artifact
+- SHA-256 (first 2MB): `2d9a68d9bfcfe1376c1464643c863a5cc6fa340b613c588da25d6d4798bfa14d`
+
+**Content head (first 80 lines)**
+```text
+{
+  "preview_mode": true,
+  "input_duration_sec": 134.139,
+  "total_runtime_sec": 110.118,
+  "stages": [
+    {
+      "name": "1_preprocess_audio",
+      "started_at": 1775123391.919654,
+      "ended_at": 1775123398.638486,
+      "duration_sec": 6.719,
+      "output": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage1_audio/preprocessed.wav"
+    },
+    {
+      "name": "2_diarize",
+      "started_at": 1775123398.6392379,
+      "ended_at": 1775123413.877578,
+      "duration_sec": 15.238,
+      "output": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage2_diarize/diarization.json"
+    },
+    {
+      "name": "5_composite",
+      "started_at": 1775123413.877707,
+      "ended_at": 1775123457.6505878,
+      "duration_sec": 43.773,
+      "output": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage4_composite/composited.mp4"
+    },
+    {
+      "name": "6_subtitles",
+      "started_at": 1775123457.651244,
+      "ended_at": 1775123468.582345,
+      "duration_sec": 10.931,
+      "output": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage5_subtitles/transcript_en.srt"
+    },
+    {
+      "name": "7_export",
+      "started_at": 1775123468.582589,
+      "ended_at": 1775123502.020448,
+      "duration_sec": 33.438,
+      "output": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage6_export/final_1080p.mp4"
+    }
+  ],
+  "final_video": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/stage6_export/final_1080p.mp4",
+  "final_video_root": "/Users/pranamyajain/hindi_podcast_local/out/episode_001_preview/final_1080p.mp4"
+}
+```
+
+## Phase 3: Pipeline Integrity Audit
+
+### Data transformations
+- Audio -> WAV: FFmpeg loudnorm + resample (Stage 1).
+- WAV -> words/segments JSON: faster-whisper (Stage 2).
+- words JSON -> diarization turns: gap-based alternation (Stage 3).
+- diarization + speaker WAV -> per-segment renders: SadTalker + idle loops (Stage 4).
+- host videos + full audio -> split screen MP4 (Stage 5).
+- segments JSON + diarization -> SRT speaker-labeled (Stage 6).
+- composited MP4 + SRT -> final MP4 with burned subs (Stage 7).
+
+### Failure points (hard fail)
+- Missing assets: `run_podcast.py` validates `source_image` and `idle_video` paths exist and are non-empty.
+- Transcription: raises if no word-level timestamps produced.
+- SadTalker: Stage 4 fails if `models/SadTalker/inference.py` missing or if SadTalker weights are not installed.
+
+
+## Phase 4: Dependency and Environment Audit
+
+### Python deps (`requirements.txt`)
+- `faster-whisper==1.0.3`
+- `torch>=2.1.0`
+- `torchaudio>=2.1.0`
+- `numpy>=1.26.0`
+- `PyYAML>=6.0`
+- `requests>=2.31.0`
+- `Pillow>=10.0.0`
+- `ffmpeg-python>=0.2.0`
+
+### Model repos under `models/` (license heads)
+**models/LatentSync/LICENSE**
+```text
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+```
+**models/SadTalker/LICENSE**
+```text
+Tencent is pleased to support the open source community by making SadTalker available.
+
+Copyright (C), a Tencent company. All rights reserved.
+
+SadTalker is licensed under the Apache 2.0 License, except for the third-party components listed below.
+
+Terms of the Apache License Version 2.0:
+---------------------------------------------
+                                Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+```
+**models/video-retalking/LICENSE**
+```text
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+```
+**models/video-retalking/third_part/GFPGAN/LICENSE**
+```text
+Tencent is pleased to support the open source community by making GFPGAN available.
+
+Copyright (C) 2021 THL A29 Limited, a Tencent company.  All rights reserved.
+
+GFPGAN is licensed under the Apache License Version 2.0 except for the third-party components listed below.
+
+
+Terms of the Apache License Version 2.0:
+---------------------------------------------
+Apache License
+
+Version 2.0, January 2004
+```
+**models/video-retalking/third_part/ganimation_replicate/LICENSE**
+```text
+MIT License
+
+Copyright (c) 2019 Yuedong Chen (Donald)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+```
+
+## Phase 5: Gap Analysis Between Intent and Implementation
+
+- `README.md` describes pyannote + LatentSync/VideoRetalking; code implements whisper-gap diarization + SadTalker-only lipsync.
+- `environment.yml` is CUDA/NVIDIA oriented and does not describe Apple Silicon / CPU execution; `requirements.txt` is closer to the active code path.
+- `podcast_pipeline/utils.py:detect_gpu_vram_gb` raises if no CUDA GPU; current pipeline stages do not call it, but the error message contradicts CPU preview usage.
+- `out/` contains large MP4 artifacts; unless Git LFS is used, pushing to GitHub will bloat clones and may hit GitHub file size limits.
+
+## Phase 6: Current State Verdict
+
+### Working today (evidence-based)
+- `out/episode_002_preview/final_720p_preview.mp4` exists, is playable, and is H.264 + AAC at 1280x720 (verified via `ffprobe`).
+- `scripts/prep_assets.py` produces looped speaker videos and still frames under `assets/` (verified by non-zero sizes).
+
+### Not working / high risk
+- Stage 4 speech rendering depends on SadTalker weights; weights are not included in this repo and must be placed locally.
+- Diarization is heuristic and will mis-assign speakers for many real dialogues.
+
+## Phase 7: Executive Summary
+
+This repo currently produces a strong *visual preview* (split screen + subtitles) using pre-looped Veo clips, but it does not yet provide robust local two-speaker lip sync on Apple Silicon. The codebase contains multiple model repos (`SadTalker`, `video-retalking`, `LatentSync`) with mixed platform constraints, and the main pipeline currently calls SadTalker only. Documentation (`README.md`, `environment.yml`) is inconsistent with the executable code path and should be brought back into alignment once the target runtime/platform is finalized.
