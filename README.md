@@ -1,72 +1,113 @@
-# Local Two-Speaker Podcast Video Pipeline (English, Offline)
+# AI Avatar Podcast Realism Probe
 
-This pipeline converts one NotebookLM English dialogue audio file into a 1080p podcast video with two real speakers.
+This repository is prepared for migration to a CUDA GPU system. The current milestone is not a SaaS app and not a full pipeline rebuild. The only priority is validating whether high-quality source footage plus MuseTalk mouth replacement can look believable enough for Instagram Reels.
 
-## Confirmed architecture
+## Current Direction
 
-1. Audio preprocess (`FFmpeg`)
-2. Speaker diarization (`pyannote-audio`)
-3. Two independent lip-sync renders (`LatentSync` primary, `VideoRetalking` fallback)
-4. Two-speaker composition (`split_screen` / `cut` / `thumbnail`)
-5. Speaker-labeled subtitles (`Whisper large-v3` via `faster-whisper`)
-6. Final export (`FFmpeg`)
+- Use fixed, high-quality human source footage.
+- Preserve the source video's natural head, eye, blink, shoulder, and lighting motion.
+- Use MuseTalk only for audio-driven mouth/lip replacement.
+- Evaluate 10-20 second clips before committing to a full product rebuild.
+- Optimize for perceived mobile realism, not frame-by-frame research metrics.
 
-## Entry point
+## Repository Structure
 
-```bash
-python /Users/pranamyajain/hindi_podcast_local/run_podcast.py \
-  --audio /abs/path/notebooklm_dialogue.wav \
-  --out /abs/path/out/episode_001 \
-  --layout split_screen
+```text
+project_root/
+  app/                    # reserved; no UI in this milestone
+  pipeline/               # lightweight reusable helpers
+  experiments/            # realism probe generator and review workflow
+  assets/                 # local-only media fixture folders
+  configs/                # probe definitions and source lists
+  scripts/                # setup/check/caption helper scripts
+  outputs/                # generated probe outputs, gitignored
+  docs/                   # migration and first-run documentation
+  requirements/           # base and CUDA/MuseTalk dependency entrypoints
+  models/MuseTalk/        # Git submodule, no weights committed
+  setup.sh
+  run_probe.sh
+  run_musetalk.sh
+  environment.yml
 ```
 
-## Required local assets
-
-- `assets/speaker_a.png` or short clip still frame for speaker A
-- `assets/speaker_b.png` or short clip still frame for speaker B
-- `assets/background_1920x1080.png`
-
-## Models and sources (local-only)
-
-1. **pyannote diarization model**
-   - Place local model files under: `models/pyannote/speaker-diarization-3.1`
-   - Source: Hugging Face `pyannote/speaker-diarization-3.1` (download offline and copy locally)
-
-2. **Whisper large-v3**
-   - Place local model files under: `models/whisper/large-v3`
-   - Source: Hugging Face `openai/whisper-large-v3` (download offline and copy locally)
-
-3. **LatentSync weights**
-   - LatentSync code checkout path: `models/LatentSync`
-   - Pinned commit currently used: `a229c3948406bc2cf6eaf4873e662e70c6a04746`
-   - Source: [https://github.com/bytedance/LatentSync](https://github.com/bytedance/LatentSync)
-   - Download model weights from the LatentSync project release/instructions and place in its expected checkpoint path.
-
-4. **VideoRetalking (fallback)**
-   - Expected path: `models/VideoRetalking`
-   - Source: install Apache-2.0 release only; keep local weights in repo-expected checkpoint paths.
-
-## License declarations for pipeline dependencies
-
-- `pyannote-audio`: MIT
-- `faster-whisper`: MIT
-- `torch`: BSD-3-Clause (permissive, allowed)
-- `ffmpeg-python`: Apache-2.0
-- `Pillow`: HPND-like permissive (PIL Software License)
-- `numpy`: BSD-3-Clause
-- `PyYAML`: MIT
-- `requests`: Apache-2.0
-- `LatentSync`: Apache-2.0
-- `VideoRetalking` (required fallback): Apache-2.0
-
-## Note on submodule requirement
-
-`git submodule add` requires the project root itself to be a git repository.
-Current folder `/Users/pranamyajain/hindi_podcast_local` is not a git repo, so LatentSync was cloned at a pinned commit instead.
-After `git init`, convert it with:
+## Quick Start On CUDA Machine
 
 ```bash
-cd /Users/pranamyajain/hindi_podcast_local
-git submodule add https://github.com/bytedance/LatentSync.git models/LatentSync
-cd models/LatentSync && git checkout a229c3948406bc2cf6eaf4873e662e70c6a04746
+git clone --recurse-submodules https://github.com/pranamyajainn/ai-podcast-project.git
+cd ai-podcast-project
+bash setup.sh
 ```
+
+Place local media fixtures:
+
+```text
+assets/audio/probe_audio.mp3
+assets/source_footage/ashok_vidyasagar_testimonial.mp4
+assets/source_footage/direct_to_camera_indoor.mp4
+assets/source_footage/podcast_reference.mp4
+assets/source_footage/creator_style_vertical.mp4
+```
+
+Run source-side probe generation:
+
+```bash
+./run_probe.sh
+```
+
+Install MuseTalk CUDA dependencies and weights:
+
+```bash
+python3 -m pip install -r models/MuseTalk/requirements.txt
+cd models/MuseTalk
+bash download_weights.sh
+cd ../..
+```
+
+Verify CUDA:
+
+```bash
+./scripts/check_cuda_env.sh
+```
+
+Run MuseTalk for every generated case and build comparisons:
+
+```bash
+./run_musetalk.sh outputs/realism_probe/<probe_id>
+```
+
+## Expected Outputs
+
+Each probe case produces:
+
+```text
+source_15s_original_framing.mp4
+source_15s_musetalk_input.mp4
+source_15s_cinematic_masked.mp4
+musetalk_case.yaml
+musetalk_output.mp4                  # after MuseTalk run
+comparison_source_vs_lipsync.mp4     # after compare pass
+difference_heatmap.mp4               # after compare pass
+```
+
+The review rubric is generated as `REVIEW.md` inside each probe output directory.
+
+## Pass/Fail Standard
+
+Pass only if a normal Instagram viewer would not identify the clip as fake within 3-5 seconds on a phone.
+
+Review specifically:
+
+- teeth artifacts
+- mouth edge blending
+- chin and jaw motion
+- blinking consistency
+- head-motion preservation
+- temporal stability
+- compression survival
+
+## Important Constraints
+
+- No FAL, OmniHuman, Sync.so, Replicate, or hosted inference is used.
+- No API keys are required.
+- Source media and model weights are not committed.
+- MuseTalk requires CUDA; Apple Silicon is only suitable for source preprocessing and packaging.

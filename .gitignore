@@ -1,8 +1,61 @@
-.venv/
+# Python
 __pycache__/
-*.pyc
-out/
-assets/avatar.png
-assets/background_1920x1080.png
-models/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# Logs/temp
 *.log
+*.tmp
+*.bak
+.DS_Store
+
+# Generated outputs
+outputs/*
+!outputs/.gitkeep
+out/
+runs/
+temp/
+tmp/
+
+# Local/private media fixtures
+assets/audio/*
+!assets/audio/.gitkeep
+assets/source_footage/*
+!assets/source_footage/.gitkeep
+
+# Model weights and caches
+models/**/checkpoints/
+models/**/weights/
+models/**/pretrained_models/
+models/**/models/*/*.pth
+models/**/models/*/*.pt
+models/**/models/*/*.safetensors
+models/**/models/*/*.ckpt
+models/**/*.pth
+models/**/*.pt
+models/**/*.safetensors
+models/**/*.ckpt
+models/**/*.onnx
+models/**/*.bin
+models/**/*.pkl
+models/**/*.h5
+.cache/
+hf_cache/
+
+# Large rendered media
+*.mp4
+*.mov
+*.mkv
+*.avi
+*.webm
+*.wav
+*.mp3
+!assets/**/*.md

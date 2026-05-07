@@ -1,0 +1,4 @@
+# Install after the MuseTalk submodule is initialized.
+# Prefer the upstream pinned file for exact CUDA compatibility:
+#   pip install -r models/MuseTalk/requirements.txt
+-r ../models/MuseTalk/requirements.txt

@@ -1,13 +1,11 @@
-name: hindi-podcast-local
+name: ai-podcast-realism-probe
 channels:
   - pytorch
   - nvidia
   - conda-forge
 dependencies:
   - python=3.10
-  - ffmpeg=6.1
-  - pytorch=2.4.*
-  - pytorch-cuda=12.1
   - pip
+  - ffmpeg
   - pip:
-      - -r requirements.txt
+      - -r requirements/base.txt

@@ -1,0 +1,21 @@
+# Realism probe configuration for CUDA migration.
+# Source media is intentionally not committed. Place the files at these relative paths.
+
+audio: assets/audio/probe_audio.mp3
+seconds: 15
+start: 1.0
+output_dir: outputs/realism_probe
+
+sources:
+  - id: ashok_vidyasagar_testimonial
+    path: assets/source_footage/ashok_vidyasagar_testimonial.mp4
+    notes: High-resolution frontal human source; strongest current realism candidate, but not podcast-style.
+  - id: direct_to_camera_indoor
+    path: assets/source_footage/direct_to_camera_indoor.mp4
+    notes: Indoor direct-to-camera candidate; useful for testing face size and temporal stability.
+  - id: podcast_reference
+    path: assets/source_footage/podcast_reference.mp4
+    notes: Podcast framing reference; useful for mouth/teeth artifact exposure.
+  - id: creator_style_vertical
+    path: assets/source_footage/creator_style_vertical.mp4
+    notes: Vertical creator/selfie style; useful for mobile compression behavior.
