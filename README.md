@@ -1,14 +1,32 @@
 # AI Avatar Podcast Realism Probe
 
-This repository is prepared for migration to a CUDA GPU system. The current milestone is not a SaaS app and not a full pipeline rebuild. The only priority is validating whether high-quality source footage plus MuseTalk mouth replacement can look believable enough for Instagram Reels.
+**Status:** CUDA Realism Validation Milestone (May 7, 2026)
 
-## Current Direction
+## ⚠️ Critical Status Update
 
-- Use fixed, high-quality human source footage.
+**This is NOT a production system.** This repository documents the first successful MuseTalk v1.5 CUDA validation on fixed high-quality source footage.
+
+### What Was Validated
+- ✅ MuseTalk v1.5 runs successfully on NVIDIA GPUs (T1000 tested, fp32 mode required)
+- ✅ Source footage + mouth-replacement approach produces borderline believable output on mobile
+- ✅ Realism threshold reached under **highly constrained conditions**
+
+### What This Does NOT Validate
+- ❌ **NOT production-ready:** Artifacts remain visible to trained observers or on desktop inspection
+- ❌ **NOT scalable:** Works only with carefully curated source material
+- ❌ **NOT deployable:** No quality gating, batch processing, or ethical framework yet
+- ❌ **NOT generalizable:** Extreme close-ups, outdoor lighting, multiple speakers all fail
+
+**See [docs/FIRST_REALISM_RESULT.md](docs/FIRST_REALISM_RESULT.md) for full validation report, technical findings, and exact reproduction steps.**
+
+## Current Direction (Experimental)
+
+- Use fixed, high-quality human source footage (indoor, front-facing, professional lighting).
 - Preserve the source video's natural head, eye, blink, shoulder, and lighting motion.
-- Use MuseTalk only for audio-driven mouth/lip replacement.
-- Evaluate 10-20 second clips before committing to a full product rebuild.
-- Optimize for perceived mobile realism, not frame-by-frame research metrics.
+- Use MuseTalk only for audio-driven mouth/lip replacement (no full avatar generation).
+- Evaluate 10-20 second clips only (longer sequences accumulate temporal drift).
+- Optimize for perceived mobile realism on Instagram-size screens, NOT frame-by-frame research metrics.
+- **Assume this approach may be abandoned** if scalability or ethical concerns prove insurmountable.
 
 ## Repository Structure
 
@@ -105,9 +123,22 @@ Review specifically:
 - temporal stability
 - compression survival
 
-## Important Constraints
+## Important Constraints & Known Limitations
 
 - No FAL, OmniHuman, Sync.so, Replicate, or hosted inference is used.
 - No API keys are required.
 - Source media and model weights are not committed.
 - MuseTalk requires CUDA; Apple Silicon is only suitable for source preprocessing and packaging.
+
+### Technical Findings (May 2026)
+
+**CRITICAL: fp16 on T1000 produces black-mouth artifacts. Always use fp32 mode.**
+
+Other findings:
+- Full DWPose/MMCV body-keypoint stack is optional; MuseTalk falls back gracefully
+- Fallback face detection produces acceptable results for mouth-only replacement
+- Windows CUDA setup is complex; Ubuntu 22.04 LTS recommended for validation
+- Inference speed on T1000 (~10s per 10s clip in fp32) is sufficient for validation, not realtime
+- Mouth sync works well, but artifacts at mouth edges remain visible to trained observers
+
+For detailed findings, see [docs/FIRST_REALISM_RESULT.md](docs/FIRST_REALISM_RESULT.md#key-findings).
